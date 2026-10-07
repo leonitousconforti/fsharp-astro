@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <AssemblyName>FSharp.Astro.Fits.Test</AssemblyName>
     <RootNamespace>FSharp.Astro.Fits.Test</RootNamespace>
+    <DeterministicSourcePaths>false</DeterministicSourcePaths>
   </PropertyGroup>
 
   <ItemGroup>
