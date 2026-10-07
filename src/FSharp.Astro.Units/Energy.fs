@@ -22,10 +22,6 @@ module Energy =
     let joulesPerGigaelectronVolt: float<J / GeV> =
         joulesPerElectronVolt * 1e9<eV / GeV>
 
-    /// Converts between two energy units given their factors to joules:
-    /// `Energy.convert Energy.joulesPerKiloelectronVolt Energy.joulesPerErg 1.0<keV>` is about `1.6e-9<erg>`.
-    let convert (from: float<J / 'a>) (into: float<J / 'b>) (x: float<'a>) : float<'b> = x * from / into
-
     /// Thermal energy kT of a temperature.
     let ofTemperature (temperature: float<K>) : float<J> = Constants.kB * temperature
 

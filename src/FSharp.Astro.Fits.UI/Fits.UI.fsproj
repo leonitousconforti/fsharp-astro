@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <AssemblyName>FSharp.Astro.Fits.UI</AssemblyName>
+    <RootNamespace>FSharp.Astro.Fits.UI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FSharp.Astro.Fits\FSharp.Astro.Fits.fsproj" />
+    <ProjectReference Include="..\FSharp.Astro.Fits\Fits.fsproj" />
   </ItemGroup>
 
 </Project>

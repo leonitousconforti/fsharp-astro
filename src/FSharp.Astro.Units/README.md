@@ -13,9 +13,9 @@ open FSharp.Astro.Units
 
 let distance = 1.3<kpc>
 let meters = distance * Length.metersPerKiloparsec                                   // float<m>
-let lightYears = Length.convert Length.metersPerKiloparsec Length.metersPerLightYear distance  // float<ly>
+let lightYears = convert Length.metersPerKiloparsec Length.metersPerLightYear distance  // float<ly>
 
-let proxima = Angle.convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 768.5<mas>
+let proxima = convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 768.5<mas>
 Length.ofParallax proxima                                                            // 1.301<pc>
 
 let hubble = 70.0<km/(s Mpc)>
@@ -28,13 +28,15 @@ let hubbleTime: float<Gyr> =
 A unit in F# carries no scale. `pc` and `ly` are unrelated types until a conversion factor relates
 them, so every quantity module holds factors to its SI base unit, named for what they are:
 `Length.metersPerParsec` has type `float<m/pc>`. Multiply a `float<pc>` by it and the compiler
-cancels the `pc` and leaves `float<m>`. Divide a `float<m>` by it and you get `float<pc>`.
+cancels the `pc` and leaves `float<m>`. Divide a `float<m>` by it and you get `float<pc>`. That is
+the whole mechanism; `convert` below is a name for doing both at once and nothing more.
 
-Each module also has a `convert` that goes between any two of its units through the base:
+One `convert` goes between any two units of a quantity through the base they share. The base is a
+measure parameter like the two units are, so there is one of it rather than one per quantity:
 
 ```fsharp
-Time.convert Time.secondsPerDay Time.secondsPerYear 365.25<d>   // 1.0<yr>
-Mass.convert Mass.kilogramsPerSolarMass Mass.kilogramsPerJupiterMass 1.0<Msun>   // 1047.6<Mjup>
+convert Time.secondsPerDay Time.secondsPerYear 365.25<d>   // 1.0<yr>
+convert Mass.kilogramsPerSolarMass Mass.kilogramsPerJupiterMass 1.0<Msun>   // 1047.6<Mjup>
 ```
 
 Compound units need no new declarations. `float<km/s>` is a velocity, `float<mas/yr>` a proper
@@ -145,7 +147,7 @@ Instant.ofParts 2451545.0<jd> 1e-11<jd>      // magnitude first, detail second
 Epoch.ofDateTimeOffset DateTimeOffset.UtcNow // exact to the 100 ns tick
 Epoch.ofMjdParts 51544.5<mjd> microsecond    // when one double is not enough
 
-Instant.difference later Epoch.j2000         // float<d>, hand this to Time.convert
+Instant.difference later Epoch.j2000         // float<d>, hand this to convert
 Instant.add 30.0<d> Epoch.j2000              // Instant
 Epoch.toJulianEpoch Epoch.j2000              // 2000.0<jyear>
 Epoch.greenwichMeanSiderealTime ut1          // 18.6974<hourangle>

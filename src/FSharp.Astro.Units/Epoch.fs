@@ -9,7 +9,7 @@ open System
 /// point and does not, so the relations here are offsets rather than the ratios the quantity
 /// modules hold, and there is no `convert`. The Julian Date is the pivot: every other form
 /// converts through it. Subtract two instants with `Instant.difference` to get a `float<d>` you
-/// can hand to `Time.convert`.
+/// can hand to `convert`.
 ///
 /// Instants are the two-part `Instant` rather than a single `float<jd>`, because a Julian Date in
 /// one double is quantised at 40 microseconds. See `Instant` for why and for what it costs, which
@@ -210,8 +210,7 @@ module Epoch =
 
     /// Local mean sidereal time at a longitude measured positive east of Greenwich.
     let localMeanSiderealTime (eastLongitude: float<deg>) (ut1: Instant) : float<hourangle> =
-        let offset =
-            Angle.convert Angle.radiansPerDegree Angle.radiansPerHourAngle eastLongitude
+        let offset = convert Angle.radiansPerDegree Angle.radiansPerHourAngle eastLongitude
 
         Angle.wrap 24.0<hourangle> (greenwichMeanSiderealTime ut1 + offset)
 

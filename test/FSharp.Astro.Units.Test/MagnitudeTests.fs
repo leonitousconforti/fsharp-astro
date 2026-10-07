@@ -25,11 +25,11 @@ let ``the distance modulus is zero at ten parsecs`` () =
     close
         1e-12
         25.0<mag>
-        (Magnitude.distanceModulus (Length.convert Length.metersPerMegaparsec Length.metersPerParsec 1.0<Mpc>))
+        (Magnitude.distanceModulus (convert Length.metersPerMegaparsec Length.metersPerParsec 1.0<Mpc>))
 
 [<Fact>]
 let ``the absolute magnitude of the Sun is about 4.83`` () =
-    let distance = Length.convert Length.metersPerAu Length.metersPerParsec 1.0<au>
+    let distance = convert Length.metersPerAu Length.metersPerParsec 1.0<au>
     let absolute = Magnitude.absolute -26.74<mag> distance
     Assert.True(abs (absolute - 4.83<mag>) < 0.01<mag>, $"got {absolute}")
 

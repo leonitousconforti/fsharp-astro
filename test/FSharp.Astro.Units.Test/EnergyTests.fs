@@ -10,12 +10,12 @@ let ``an electron volt in joules is exact`` () =
 
 [<Fact>]
 let ``a kiloelectron volt in ergs`` () =
-    close 1e-15 1.602176634e-9<erg> (Energy.convert Energy.joulesPerKiloelectronVolt Energy.joulesPerErg 1.0<keV>)
+    close 1e-15 1.602176634e-9<erg> (convert Energy.joulesPerKiloelectronVolt Energy.joulesPerErg 1.0<keV>)
 
 [<Fact>]
 let ``the electron volt prefixes`` () =
-    Assert.Equal(1000.0<keV>, Energy.convert Energy.joulesPerMegaelectronVolt Energy.joulesPerKiloelectronVolt 1.0<MeV>)
-    Assert.Equal(1000.0<MeV>, Energy.convert Energy.joulesPerGigaelectronVolt Energy.joulesPerMegaelectronVolt 1.0<GeV>)
+    Assert.Equal(1000.0<keV>, convert Energy.joulesPerMegaelectronVolt Energy.joulesPerKiloelectronVolt 1.0<MeV>)
+    Assert.Equal(1000.0<MeV>, convert Energy.joulesPerGigaelectronVolt Energy.joulesPerMegaelectronVolt 1.0<GeV>)
 
 [<Fact>]
 let ``ten million kelvin is a bit under a kiloelectron volt`` () =
@@ -30,10 +30,7 @@ let ``thermal energy and temperature are inverses`` () =
 
 [<Fact>]
 let ``a solar luminosity in erg per second`` () =
-    close
-        1e-15
-        3.828e33<erg / s>
-        (Luminosity.convert Luminosity.wattsPerSolarLuminosity Luminosity.wattsPerErgPerSecond 1.0<Lsun>)
+    close 1e-15 3.828e33<erg / s> (convert Luminosity.wattsPerSolarLuminosity Luminosity.wattsPerErgPerSecond 1.0<Lsun>)
 
 [<Fact>]
 let ``flux and luminosity are inverses at a fixed distance`` () =

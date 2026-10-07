@@ -6,7 +6,7 @@ open System
 /// away from another.
 ///
 /// Every angle here is in radians, because these are trigonometry and not bookkeeping. Convert on
-/// the way in and out with `Angle.convert`. The first coordinate is a longitude measured eastward
+/// the way in and out with `convert`. The first coordinate is a longitude measured eastward
 /// and the second a latitude measured from the equator: right ascension and declination, galactic
 /// longitude and latitude, ecliptic longitude and latitude. Nothing here knows which frame it is,
 /// and nothing here transforms between frames.

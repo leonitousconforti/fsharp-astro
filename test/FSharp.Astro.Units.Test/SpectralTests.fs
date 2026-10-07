@@ -23,7 +23,7 @@ let ``a one angstrom photon carries 12.4 keV`` () =
 
 [<Fact>]
 let ``frequency prefixes`` () =
-    Assert.Equal(1400.0<MHz>, Frequency.convert Frequency.hertzPerGigahertz Frequency.hertzPerMegahertz 1.4<GHz>)
+    Assert.Equal(1400.0<MHz>, convert Frequency.hertzPerGigahertz Frequency.hertzPerMegahertz 1.4<GHz>)
 
 [<Fact>]
 let ``a jansky in cgs`` () =
@@ -36,10 +36,7 @@ let ``a jansky in cgs`` () =
 
 [<Fact>]
 let ``jansky prefixes`` () =
-    close
-        1e-15
-        2000.0<uJy>
-        (FluxDensity.convert FluxDensity.janskysPerMillijansky FluxDensity.janskysPerMicrojansky 2.0<mJy>)
+    close 1e-15 2000.0<uJy> (convert FluxDensity.janskysPerMillijansky FluxDensity.janskysPerMicrojansky 2.0<mJy>)
 
 [<Fact>]
 let ``the AB zero point at 5500 angstroms in cgs per angstrom`` () =

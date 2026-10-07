@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <AssemblyName>FSharp.Astro.Fits.Test</AssemblyName>
+    <RootNamespace>FSharp.Astro.Fits.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,12 +32,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FSharp.Astro.Fits\FSharp.Astro.Fits.fsproj" />
-    <ProjectReference Include="..\..\src\FSharp.Astro.Fits.TypeProvider\FSharp.Astro.Fits.TypeProvider.fsproj" />
+    <ProjectReference Include="..\..\src\FSharp.Astro.Fits\Fits.fsproj" />
+    <ProjectReference Include="..\..\src\FSharp.Astro.Fits.TypeProvider\Fits.TypeProvider.fsproj" />
     <!-- The design-time half is never a reference, only something that has to exist before this
          project compiles, so that the compiler can load FitsProvider out of it. -->
     <ProjectReference
-      Include="..\..\src\FSharp.Astro.Fits.TypeProvider.DesignTime\FSharp.Astro.Fits.TypeProvider.DesignTime.fsproj"
+      Include="..\..\src\FSharp.Astro.Fits.TypeProvider.DesignTime\Fits.TypeProvider.DesignTime.fsproj"
       ReferenceOutputAssembly="false" />
   </ItemGroup>
 

@@ -57,7 +57,7 @@
   </Target>
 
   <ItemGroup>
-    <ProjectReference Include="..\FSharp.Astro.Units\FSharp.Astro.Units.fsproj" />
+    <ProjectReference Include="..\FSharp.Astro.Units\Units.fsproj" />
   </ItemGroup>
 
   <ItemGroup>

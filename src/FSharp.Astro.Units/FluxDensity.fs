@@ -13,8 +13,3 @@ module FluxDensity =
 
     /// Janskys in one microjansky.
     let janskysPerMicrojansky: float<Jy / uJy> = 1e-6<Jy / uJy>
-
-    /// Converts between two flux density units given their factors to janskys:
-    /// `FluxDensity.convert FluxDensity.janskysPerMillijansky FluxDensity.janskysPerMicrojansky 2.0<mJy>`
-    /// is `2000.0<uJy>`.
-    let convert (from: float<Jy / 'a>) (into: float<Jy / 'b>) (x: float<'a>) : float<'b> = x * from / into

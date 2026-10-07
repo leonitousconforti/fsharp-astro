@@ -15,7 +15,3 @@ module Frequency =
 
     /// Hertz in one terahertz.
     let hertzPerTerahertz: float<Hz / THz> = 1e12<Hz / THz>
-
-    /// Converts between two frequency units given their factors to hertz:
-    /// `Frequency.convert Frequency.hertzPerGigahertz Frequency.hertzPerMegahertz 1.4<GHz>` is `1400.0<MHz>`.
-    let convert (from: float<Hz / 'a>) (into: float<Hz / 'b>) (x: float<'a>) : float<'b> = x * from / into

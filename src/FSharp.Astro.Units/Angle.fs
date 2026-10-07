@@ -28,10 +28,6 @@ module Angle =
     let radiansPerHourAngle: float<rad / hourangle> =
         Math.PI / 12.0 * 1.0<rad / hourangle>
 
-    /// Converts between two angle units given their factors to radians:
-    /// `Angle.convert Angle.radiansPerDegree Angle.radiansPerArcsecond 1.0<deg>` is `3600.0<arcsec>`.
-    let convert (from: float<rad / 'a>) (into: float<rad / 'b>) (x: float<'a>) : float<'b> = x * from / into
-
     /// Sine of an angle in radians.
     let sin (x: float<rad>) : float = Math.Sin(float x)
 

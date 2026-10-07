@@ -15,7 +15,3 @@ module Mass =
 
     /// Kilograms in one Jupiter mass. Derived from the IAU 2015 nominal GMjup and CODATA 2018 G.
     let kilogramsPerJupiterMass: float<kg / Mjup> = Constants.Mjup / 1.0<Mjup>
-
-    /// Converts between two mass units given their factors to kilograms:
-    /// `Mass.convert Mass.kilogramsPerSolarMass Mass.kilogramsPerJupiterMass 1.0<Msun>` is about `1048.0<Mjup>`.
-    let convert (from: float<kg / 'a>) (into: float<kg / 'b>) (x: float<'a>) : float<'b> = x * from / into

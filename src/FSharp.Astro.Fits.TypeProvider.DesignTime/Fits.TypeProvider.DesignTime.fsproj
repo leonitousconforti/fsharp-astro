@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FSharp.Astro.Fits.TypeProvider\FSharp.Astro.Fits.TypeProvider.fsproj" />
+    <ProjectReference Include="..\FSharp.Astro.Fits.TypeProvider\Fits.TypeProvider.fsproj" />
   </ItemGroup>
 
   <!-- Inside a package the compiler finds the design-time assembly under typeproviders/fsharp41.

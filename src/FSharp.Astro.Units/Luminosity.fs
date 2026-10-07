@@ -10,11 +10,6 @@ module Luminosity =
     /// Watts in one nominal solar luminosity.
     let wattsPerSolarLuminosity: float<W / Lsun> = Constants.Lsun / 1.0<Lsun>
 
-    /// Converts between two power units given their factors to watts:
-    /// `Luminosity.convert Luminosity.wattsPerSolarLuminosity Luminosity.wattsPerErgPerSecond 1.0<Lsun>`
-    /// is `3.828e33<erg/s>`.
-    let convert (from: float<W / 'a>) (into: float<W / 'b>) (x: float<'a>) : float<'b> = x * from / into
-
     /// Bolometric flux at a distance from an isotropic source, L / 4 pi d^2.
     let flux (luminosity: float<W>) (distance: float<m>) : float<W / m^2> =
         luminosity / (4.0 * System.Math.PI * distance * distance)

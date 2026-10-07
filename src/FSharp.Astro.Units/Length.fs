@@ -52,10 +52,6 @@ module Length =
     /// Meters in one nominal equatorial Jupiter radius.
     let metersPerJupiterRadius: float<m / Rjup> = Constants.Rjup / 1.0<Rjup>
 
-    /// Converts between two length units given their factors to meters:
-    /// `Length.convert Length.metersPerParsec Length.metersPerLightYear 1.0<pc>` is about `3.26<ly>`.
-    let convert (from: float<m / 'a>) (into: float<m / 'b>) (x: float<'a>) : float<'b> = x * from / into
-
     /// Distance from a trigonometric parallax, d = 1/p. Valid for the small angles where the
     /// parsec is defined; a parallax of 1 arcsec is 1 pc.
     let ofParallax (parallax: float<arcsec>) : float<pc> = 1.0<pc arcsec> / parallax

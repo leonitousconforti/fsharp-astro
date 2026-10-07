@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Compile Include="Units.fs" />
+    <Compile Include="Convert.fs" />
     <Compile Include="Constants.fs" />
     <Compile Include="Time.fs" />
     <Compile Include="Angle.fs" />

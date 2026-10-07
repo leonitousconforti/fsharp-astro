@@ -30,7 +30,3 @@ module Time =
 
     /// Seconds in a billion Julian years.
     let secondsPerGigayear: float<s / Gyr> = secondsPerYear * 1e9<yr / Gyr>
-
-    /// Converts between two time units given their factors to seconds:
-    /// `Time.convert Time.secondsPerDay Time.secondsPerYear 365.25<d>` is `1.0<yr>`.
-    let convert (from: float<s / 'a>) (into: float<s / 'b>) (x: float<'a>) : float<'b> = x * from / into

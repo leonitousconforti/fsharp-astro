@@ -15,7 +15,7 @@ ships inside `FSharp.Astro.Fits`, so one package reference gives both the API an
 ```fsharp
 open FSharp.Astro.Units
 
-let proxima = Angle.convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 768.5<mas>
+let proxima = convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 768.5<mas>
 Length.ofParallax proxima                           // 1.301<pc>
 Magnitude.distanceModulus 100.0<pc>                 // 5.0<mag>
 let hubbleTime = 1.0 / 70.0<km/(s Mpc)> * Length.metersPerMegaparsec / Length.metersPerKilometer

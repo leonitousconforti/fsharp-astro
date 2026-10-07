@@ -10,7 +10,7 @@ let ``a day is 86400 seconds`` () =
 
 [<Fact>]
 let ``a Julian year is 365.25 days`` () =
-    Assert.Equal(365.25<d>, Time.convert Time.secondsPerYear Time.secondsPerDay 1.0<yr>)
+    Assert.Equal(365.25<d>, convert Time.secondsPerYear Time.secondsPerDay 1.0<yr>)
 
 [<Fact>]
 let ``a gigayear is 3.15576e16 seconds`` () =
@@ -18,7 +18,7 @@ let ``a gigayear is 3.15576e16 seconds`` () =
 
 [<Fact>]
 let ``an hour is sixty minutes`` () =
-    Assert.Equal(60.0<min>, Time.convert Time.secondsPerHour Time.secondsPerMinute 1.0<h>)
+    Assert.Equal(60.0<min>, convert Time.secondsPerHour Time.secondsPerMinute 1.0<h>)
 
 [<Fact>]
 let ``converting there and back is the identity`` () =
@@ -28,8 +28,8 @@ let ``converting there and back is the identity`` () =
             (fun x ->
                 let t = x * 1.0<Myr>
 
-                Time.convert Time.secondsPerMegayear Time.secondsPerDay t
-                |> Time.convert Time.secondsPerDay Time.secondsPerMegayear
+                convert Time.secondsPerMegayear Time.secondsPerDay t
+                |> convert Time.secondsPerDay Time.secondsPerMegayear
                 |> within 1e-12 t
             )
     )

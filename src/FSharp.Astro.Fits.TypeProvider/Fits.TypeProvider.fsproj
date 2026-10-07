@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FSharp.Astro.Fits\FSharp.Astro.Fits.fsproj" />
+    <ProjectReference Include="..\FSharp.Astro.Fits\Fits.fsproj" />
   </ItemGroup>
 
 </Project>

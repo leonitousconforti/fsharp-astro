@@ -14,11 +14,11 @@ let ``a light year in meters is exact`` () =
 
 [<Fact>]
 let ``a parsec in light years`` () =
-    close 1e-14 3.2615637771674333<ly> (Length.convert Length.metersPerParsec Length.metersPerLightYear 1.0<pc>)
+    close 1e-14 3.2615637771674333<ly> (convert Length.metersPerParsec Length.metersPerLightYear 1.0<pc>)
 
 [<Fact>]
 let ``a parsec in astronomical units`` () =
-    close 1e-14 206264.80624709636<au> (Length.convert Length.metersPerParsec Length.metersPerAu 1.0<pc>)
+    close 1e-14 206264.80624709636<au> (convert Length.metersPerParsec Length.metersPerAu 1.0<pc>)
 
 [<Fact>]
 let ``the parsec is the distance at which one au subtends one arcsecond`` () =
@@ -31,21 +31,21 @@ let ``light takes 499 seconds to cross one astronomical unit`` () =
 
 [<Fact>]
 let ``metric prefixes on the parsec`` () =
-    Assert.Equal(1000.0<pc>, Length.convert Length.metersPerKiloparsec Length.metersPerParsec 1.0<kpc>)
-    Assert.Equal(1000.0<kpc>, Length.convert Length.metersPerMegaparsec Length.metersPerKiloparsec 1.0<Mpc>)
-    Assert.Equal(1000.0<Mpc>, Length.convert Length.metersPerGigaparsec Length.metersPerMegaparsec 1.0<Gpc>)
+    Assert.Equal(1000.0<pc>, convert Length.metersPerKiloparsec Length.metersPerParsec 1.0<kpc>)
+    Assert.Equal(1000.0<kpc>, convert Length.metersPerMegaparsec Length.metersPerKiloparsec 1.0<Mpc>)
+    Assert.Equal(1000.0<Mpc>, convert Length.metersPerGigaparsec Length.metersPerMegaparsec 1.0<Gpc>)
 
 [<Fact>]
 let ``an angstrom is a tenth of a nanometer`` () =
-    close 1e-15 550.0<nm> (Length.convert Length.metersPerAngstrom Length.metersPerNanometer 5500.0<AA>)
+    close 1e-15 550.0<nm> (convert Length.metersPerAngstrom Length.metersPerNanometer 5500.0<AA>)
 
 [<Fact>]
 let ``the solar radius in astronomical units`` () =
-    close 1e-6 4.65047e-3<au> (Length.convert Length.metersPerSolarRadius Length.metersPerAu 1.0<Rsun>)
+    close 1e-6 4.65047e-3<au> (convert Length.metersPerSolarRadius Length.metersPerAu 1.0<Rsun>)
 
 [<Fact>]
 let ``Jupiter is about eleven Earth radii across`` () =
-    close 1e-4 11.209<Rearth> (Length.convert Length.metersPerJupiterRadius Length.metersPerEarthRadius 1.0<Rjup>)
+    close 1e-4 11.209<Rearth> (convert Length.metersPerJupiterRadius Length.metersPerEarthRadius 1.0<Rjup>)
 
 [<Fact>]
 let ``parallax and distance are reciprocals`` () =
@@ -55,8 +55,8 @@ let ``parallax and distance are reciprocals`` () =
 [<Fact>]
 let ``a milliarcsecond of parallax is a kiloparsec`` () =
     let parallax =
-        Angle.convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 1.0<mas>
-    close 1e-12 1.0<kpc> (Length.convert Length.metersPerParsec Length.metersPerKiloparsec (Length.ofParallax parallax))
+        convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 1.0<mas>
+    close 1e-12 1.0<kpc> (convert Length.metersPerParsec Length.metersPerKiloparsec (Length.ofParallax parallax))
 
 [<Fact>]
 let ``the Hubble time for 70 km/s/Mpc is about fourteen gigayears`` () =
@@ -77,8 +77,8 @@ let ``converting there and back is the identity`` () =
             (fun x ->
                 let d = x * 1.0<pc>
 
-                Length.convert Length.metersPerParsec Length.metersPerLightYear d
-                |> Length.convert Length.metersPerLightYear Length.metersPerParsec
+                convert Length.metersPerParsec Length.metersPerLightYear d
+                |> convert Length.metersPerLightYear Length.metersPerParsec
                 |> within 1e-12 d
             )
     )

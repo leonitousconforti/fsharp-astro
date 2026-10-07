@@ -7,7 +7,7 @@ open Helpers
 
 [<Fact>]
 let ``a degree is 3600 arcseconds`` () =
-    close 1e-15 3600.0<arcsec> (Angle.convert Angle.radiansPerDegree Angle.radiansPerArcsecond 1.0<deg>)
+    close 1e-15 3600.0<arcsec> (convert Angle.radiansPerDegree Angle.radiansPerArcsecond 1.0<deg>)
 
 [<Fact>]
 let ``an arcsecond in radians`` () =
@@ -15,15 +15,15 @@ let ``an arcsecond in radians`` () =
 
 [<Fact>]
 let ``a milliarcsecond is a thousandth of an arcsecond`` () =
-    close 1e-15 1e-3<arcsec> (Angle.convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 1.0<mas>)
+    close 1e-15 1e-3<arcsec> (convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 1.0<mas>)
 
 [<Fact>]
 let ``a microarcsecond is a millionth of an arcsecond`` () =
-    close 1e-15 1e-6<arcsec> (Angle.convert Angle.radiansPerMicroarcsecond Angle.radiansPerArcsecond 1.0<uas>)
+    close 1e-15 1e-6<arcsec> (convert Angle.radiansPerMicroarcsecond Angle.radiansPerArcsecond 1.0<uas>)
 
 [<Fact>]
 let ``an hour of right ascension is fifteen degrees`` () =
-    close 1e-15 15.0<deg> (Angle.convert Angle.radiansPerHourAngle Angle.radiansPerDegree 1.0<hourangle>)
+    close 1e-15 15.0<deg> (convert Angle.radiansPerHourAngle Angle.radiansPerDegree 1.0<hourangle>)
 
 [<Fact>]
 let ``a full circle is two pi radians`` () =
