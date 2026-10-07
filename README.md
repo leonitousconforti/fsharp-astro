@@ -2,7 +2,7 @@
 
 Astronomy libraries for F# on .NET 10. One repository, two NuGet packages, no dependencies beyond
 FSharp.Core. `FSharp.Astro.Fits` depends on `FSharp.Astro.Units`; nothing depends on the FITS
-library.
+library. `FSharp.Astro.Units` is also built for .NET Standard 2.1.
 
 | Package | What it does | Source |
 | --- | --- | --- |

@@ -14,9 +14,12 @@ let ``brighter is smaller`` () =
     Assert.True(Magnitude.ofFluxRatio 2.0<Jy> 1.0<Jy> < 0.0<mag>)
 
 [<Fact>]
-let ``the AB zero point is 3631 janskys`` () =
-    Assert.Equal(0.0<mag>, Magnitude.ab 3631.0<Jy>)
-    close 1e-12 7.5<mag> (Magnitude.ab 3.631<Jy>)
+let ``the AB zero point is 3630.78 janskys`` () =
+    close 1e-9 3630.7805477<Jy> Magnitude.abZeroPoint
+    Assert.Equal(0.0<mag>, Magnitude.ab Magnitude.abZeroPoint)
+    // The round 3631 Jy everyone quotes is 0.07 millimagnitudes off the definition.
+    Assert.InRange(float (Magnitude.ab 3631.0<Jy>), -1e-4, 0.0)
+    close 1e-12 7.5<mag> (Magnitude.ab (Magnitude.abZeroPoint / 1000.0))
 
 [<Fact>]
 let ``the distance modulus is zero at ten parsecs`` () =

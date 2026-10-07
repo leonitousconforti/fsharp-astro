@@ -15,8 +15,9 @@ module Magnitude =
     let fluxRatio (difference: float<mag>) : float = 10.0 ** (-0.4 * float difference)
 
     /// Zero point of the AB system, the flux density of a zeroth magnitude
-    /// source.
-    let abZeroPoint: float<Jy> = 3631.0<Jy>
+    /// source: `10^(-0.4 * 48.60)` erg/(s cm^2 Hz), which is 3630.78 Jy. The
+    /// round 3631 Jy usually quoted is 0.07 millimagnitudes off.
+    let abZeroPoint: float<Jy> = 10.0 ** (-0.4 * 48.60) * 1e23<Jy>
 
     /// AB magnitude of a flux density per unit frequency.
     let ab (fluxDensity: float<Jy>) : float<mag> = ofFluxRatio fluxDensity abZeroPoint

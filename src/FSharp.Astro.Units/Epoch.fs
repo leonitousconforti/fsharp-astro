@@ -54,7 +54,7 @@ module Epoch =
 
     /// Modified Julian Date of an instant, JD - 2400000.5. A single double, so
     /// lossy in the same way `Instant.toJd` is, though less so: a Modified
-    /// Julian Date is a hundredth the size of a Julian Date and resolves 630
+    /// Julian Date is a fiftieth the size of a Julian Date and resolves 630
     /// nanoseconds rather than 40 microseconds.
     let toMjd (instant: Instant) : float<mjd> =
         Instant.difference instant mjdOrigin * 1.0<mjd / d>
@@ -159,13 +159,23 @@ module Epoch =
     /// is the Earth's rotation period proper.
     let meanStellarDay: float<s> = Time.secondsPerDay * 1.0<d> / stellarPerSolar
 
-    /// Ratio of a mean solar day to the mean sidereal day, the rate of the IAU
-    /// 1982 expression for Greenwich mean sidereal time. Slightly larger than
-    /// `stellarPerSolar`: sidereal time is measured from the equinox, and the
-    /// equinox precesses westward, so the Earth returns to it a little before
-    /// it returns to a fixed star.
-    let siderealPerSolar: float =
-        (876600.0 * 3600.0 + 8640184.812866) / 36525.0 / 86400.0
+    /// Precession in right ascension accumulated since J2000, the polynomial
+    /// that turns the Earth rotation angle into Greenwich mean sidereal time in
+    /// the IAU 2006 expression of Capitaine, Wallace and Chapront 2003. In
+    /// arcseconds, as a function of Julian centuries from J2000.
+    let private precessionInRightAscension (t: float) : float =
+        0.014506
+        + t
+          * (4612.156534
+             + t * (1.3915817 + t * (-0.00000044 + t * (-0.000029956 + t * -0.0000000368))))
+
+    /// Ratio of a mean solar day to the mean sidereal day, the rate at J2000 of
+    /// the IAU 2006 expression for Greenwich mean sidereal time: the rotation
+    /// rate plus the 4612 arcseconds a century of precession in right
+    /// ascension. Slightly larger than `stellarPerSolar`: sidereal time is
+    /// measured from the equinox, and the equinox precesses westward, so the
+    /// Earth returns to it a little before it returns to a fixed star.
+    let siderealPerSolar: float = stellarPerSolar + 4612.156534 / 1296000.0 / 36525.0
 
     /// Length of the mean sidereal day in SI seconds, about 86164.0905 s. Eight
     /// milliseconds shorter than `meanStellarDay`, which is the precession in a
@@ -180,18 +190,22 @@ module Epoch =
         let turns = 0.7790572732640 + stellarPerSolar * days
         Angle.wrap (2.0 * Math.PI * 1.0<rad>) (2.0 * Math.PI * turns * 1.0<rad>)
 
-    /// Greenwich mean sidereal time from UT1, by the IAU 1982 expression of
-    /// Aoki et al. in the form valid at any instant rather than only at 0h.
-    /// Wrapped into `[0h, 24h)`. "Mean" is without the nutation in longitude;
-    /// adding the equation of the equinoxes gives apparent sidereal time.
+    /// Greenwich mean sidereal time from UT1, by the IAU 2006 expression: the
+    /// Earth rotation angle plus the precession in right ascension accumulated
+    /// since J2000. Wrapped into `[0h, 24h)`. "Mean" is without the nutation in
+    /// longitude; adding the equation of the equinoxes gives apparent sidereal
+    /// time.
+    ///
+    /// The polynomial's argument is strictly TT rather than UT1. No time scale
+    /// is modelled here, so the one instant serves for both, which moves the
+    /// result by a tenth of a milliarcsecond: the polynomial grows by 4612
+    /// arcseconds a century and TT leads UT1 by about a minute.
     let greenwichMeanSiderealTime (ut1: Instant) : float<hourangle> =
-        let t = julianCenturies ut1
+        let precession =
+            precessionInRightAscension (julianCenturies ut1) * 1.0<arcsec>
+            |> convert Angle.radiansPerArcsecond Angle.radiansPerHourAngle
 
-        let seconds =
-            67310.54841 + (876600.0 * 3600.0 + 8640184.812866) * t + 0.093104 * t * t
-            - 6.2e-6 * t * t * t
-
-        Angle.wrap 24.0<hourangle> (seconds / 3600.0 * 1.0<hourangle>)
+        Angle.wrap 24.0<hourangle> (earthRotationAngle ut1 / Angle.radiansPerHourAngle + precession)
 
     /// Mean obliquity of the ecliptic, the tilt of the Earth's axis, by the IAU
     /// 1980 polynomial. About 23.4393 degrees and shrinking by 47 arcseconds a

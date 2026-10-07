@@ -68,9 +68,10 @@ module Instant =
     /// `Fraction` lies in `[-0.5, 0.5)`.
     ///
     /// Put the magnitude in the first argument and the detail in the second.
-    /// `ofParts 2451545.0<jd> 1e-11<jd>` keeps that last picosecond of a day;
-    /// writing the same instant as a single `2451545.00000000001<jd>` loses it
-    /// before the call even happens.
+    /// `ofParts 2451545.0<jd> 1e-11<jd>` keeps those last 864 nanoseconds;
+    /// writing the same instant as a single `2451545.00000000001<jd>` loses
+    /// them before the call even happens, since the spacing of doubles there is
+    /// 40 microseconds.
     let ofParts (day: float<jd>) (fraction: float<jd>) : Instant =
         let struct (sum, remainder) = twoSum (float day) (float fraction)
 

@@ -16,7 +16,7 @@ let ``the ST zero point is zeroth magnitude`` () =
     close 1e-15 Photometry.stZeroPoint (Photometry.stFluxDensity 0.0<mag>)
 
 [<Fact>]
-let ``the ST zero point is 3.631e-9 in cgs`` () =
+let ``the ST zero point is 3.6308e-9 in cgs`` () =
     let cgs =
         Photometry.stZeroPoint
         * Length.metersPerCentimeter
@@ -24,7 +24,7 @@ let ``the ST zero point is 3.631e-9 in cgs`` () =
         * Length.metersPerAngstrom
         / Luminosity.wattsPerErgPerSecond
 
-    close 1e-12 3.631e-9<erg / (s cm^2 AA)> cgs
+    close 1e-9 3.6307805477e-9<erg / (s cm^2 AA)> cgs
 
 [<Fact>]
 let ``AB and ST agree at the pivot wavelength`` () =

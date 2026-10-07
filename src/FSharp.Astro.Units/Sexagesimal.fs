@@ -7,10 +7,12 @@ open System.Globalization
 /// declination.
 ///
 /// Formatting rounds the seconds to a fixed number of decimal places and
-/// carries the overflow upward, so 23:59:59.96 to one place is 00:00:00.0 and
-/// not 23:59:60.0. The carry is done in integer arithmetic on the rounded
-/// seconds, which is the only way to get it right: rounding the three fields
-/// independently produces a sixtieth that does not exist.
+/// carries the overflow upward, so 12:59:59.96 to one place is 13:00:00.0 and
+/// not 12:59:60.0. The carry runs through the top field as well, so 23:59:59.96
+/// becomes 24:00:00.0 rather than wrapping; wrap the angle first with
+/// `Angle.wrap` if it should. The carry is done in integer arithmetic on the
+/// rounded seconds, which is the only way to get it right: rounding the three
+/// fields independently produces a sixtieth that does not exist.
 ///
 /// Parsing is liberal about separators. Colons, spaces and the `h m s`, `d m s`
 /// and `° ' "` markers all work, a leading `+` or `-` applies to the whole

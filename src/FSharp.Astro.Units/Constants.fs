@@ -32,8 +32,11 @@ module Constants =
     let sigmaSB: float<W / (m^2 K^4)> =
         2.0 * Math.PI ** 5.0 * (kB * kB * kB * kB) / (15.0 * (h * h * h) * (c * c))
 
-    /// Wien wavelength displacement law constant. CODATA 2018.
-    let bWien: float<m K> = 2.897771955e-3<m K>
+    /// Wien wavelength displacement law constant, h c / (kB x) where x is the
+    /// root of x = 5 (1 - e^-x), 4.965114231744276. Exact since the 2019 SI
+    /// fixed h, c and kB; computed from its definition, and it agrees with the
+    /// CODATA 2018 value 2.897771955e-3 m K.
+    let bWien: float<m K> = h * c / (kB * 4.965114231744276)
 
     /// Electron mass. CODATA 2018.
     let electronMass: float<kg> = 9.1093837015e-31<kg>

@@ -74,14 +74,14 @@ let ``comparison agrees with the difference`` () =
 
 [<Fact>]
 let ``the second part keeps precision a single Julian Date cannot`` () =
-    // A single double at JD 2451545 is quantised at 40 microseconds, so adding a hundredth of a
-    // nanosecond to it does nothing at all.
-    let microsecond = 1e-11<jd> // 1e-11 days is 864 nanoseconds
-    let asOneDouble = (2451545.0<jd> + microsecond) - 2451545.0<jd>
+    // A single double at JD 2451545 is quantised at 40 microseconds, so adding 864 nanoseconds to
+    // it does nothing at all.
+    let detail = 1e-11<jd> // 864 nanoseconds
+    let asOneDouble = (2451545.0<jd> + detail) - 2451545.0<jd>
     Assert.Equal(0.0<jd>, asOneDouble)
 
     // The two-part form keeps it, and difference gives it back.
-    let instant = Instant.ofParts 2451545.0<jd> microsecond
+    let instant = Instant.ofParts 2451545.0<jd> detail
     let gap = Instant.difference instant Epoch.j2000
     close 1e-12 (1e-11<d>) gap
 

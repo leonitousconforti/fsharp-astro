@@ -120,7 +120,12 @@ let ``calendar instants round trip to the tick`` () =
 
 [<Fact>]
 let ``Greenwich mean sidereal time at J2000 is 18h 41m 50.55s`` () =
-    close 1e-10 18.697374558<hourangle> (Epoch.greenwichMeanSiderealTime Epoch.j2000)
+    // The Earth rotation angle at J2000, 0.7790572732640 turns, plus the constant term of the IAU
+    // 2006 precession polynomial, 0.014506 arcseconds.
+    let expected = (0.7790572732640 * 24.0 + 0.014506 / 15.0 / 3600.0) * 1.0<hourangle>
+
+    close 1e-12 expected (Epoch.greenwichMeanSiderealTime Epoch.j2000)
+    close 1e-9 18.69737483<hourangle> (Epoch.greenwichMeanSiderealTime Epoch.j2000)
 
 [<Fact>]
 let ``sidereal time advances by a sidereal day in a solar day`` () =
@@ -167,10 +172,10 @@ let ``sidereal time resolves a millisecond of UT1`` () =
 
 [<Fact>]
 let ``a mean sidereal day is 86164.0905 seconds`` () =
-    close 1e-12 86164.09053083284<s> Epoch.meanSiderealDay
+    close 1e-9 86164.0905308<s> Epoch.meanSiderealDay
     // The stellar day is eight milliseconds longer: the equinox precesses to meet the Earth.
     close 1e-12 86164.09890369035<s> Epoch.meanStellarDay
-    close 1e-6 8.372857e-3<s> (Epoch.meanStellarDay - Epoch.meanSiderealDay)
+    close 1e-6 8.372357e-3<s> (Epoch.meanStellarDay - Epoch.meanSiderealDay)
 
 [<Fact>]
 let ``the hour angle is zero on the meridian and signed either side`` () =

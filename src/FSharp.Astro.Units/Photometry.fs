@@ -22,26 +22,27 @@ type PhotometricBand = {
 /// colour indices and bolometric magnitudes. Extinction lives in `Extinction`.
 ///
 /// AB and ST are defined by a single number each, because each fixes a flat
-/// spectrum: a zeroth AB magnitude is 3631 Jy at every frequency, a zeroth ST
-/// magnitude is 3.631e-9 erg/(s cm^2 AA) at every wavelength, and the two agree
-/// at 5477.9 AA by construction. Vega is not: it is defined by the spectrum of
-/// a particular star, so it has no single zero point and every band needs its
-/// own. That is the whole of the difference, and it is why `ab` and `st` take
-/// only a flux density while `vega` also takes a band.
+/// spectrum: a zeroth AB magnitude is 3630.78 Jy at every frequency, a zeroth
+/// ST magnitude is 3.6308e-9 erg/(s cm^2 AA) at every wavelength, and the two
+/// agree at 5475.3 AA by construction. Vega is not: it is defined by the
+/// spectrum of a particular star, so it has no single zero point and every band
+/// needs its own. That is the whole of the difference, and it is why `ab` and
+/// `st` take only a flux density while `vega` also takes a band.
 [<RequireQualifiedAccess>]
 module Photometry =
 
     /// Zero point of the AB system, the flux density per unit frequency of a
-    /// zeroth magnitude source at every frequency. Oke and Gunn 1983,
-    /// equivalently `m = -2.5 log10 f_nu - 48.60` with `f_nu` in erg/(s cm^2
-    /// Hz).
+    /// zeroth magnitude source at every frequency: `10^(-0.4 * 48.60)` erg/(s
+    /// cm^2 Hz), or 3630.78 Jy, from the definition `m = -2.5 log10 f_nu -
+    /// 48.60` of Oke and Gunn 1983. The same value as `Magnitude.abZeroPoint`.
     let abZeroPoint: float<Jy> = Magnitude.abZeroPoint
 
     /// Zero point of the ST system, the flux density per unit wavelength of a
-    /// zeroth magnitude source at every wavelength. 3.631e-9 erg/(s cm^2 AA),
-    /// equivalently `m = -2.5 log10 f_lambda - 21.10` with `f_lambda` in cgs.
-    /// The HST system.
-    let stZeroPoint: float<W / m^3> = 3.631e-2<W / m^3>
+    /// zeroth magnitude source at every wavelength: `10^(-0.4 * 21.10)` erg/(s
+    /// cm^2 AA), or 3.6308e-9, from the definition `m = -2.5 log10 f_lambda -
+    /// 21.10` with `f_lambda` in cgs. The HST system. One erg/(s cm^2 AA) is
+    /// exactly 1e7 W/m^3.
+    let stZeroPoint: float<W / m^3> = 10.0 ** (-0.4 * 21.10) * 1e7<W / m^3>
 
     /// Wavelength at which the AB and ST systems give the same magnitude, about
     /// 5475 AA, near the middle of V. Derived from the two zero points rather
@@ -147,7 +148,8 @@ module Photometry =
     /// Wheaton and Megeath 2003, Table 2. `u` to `z` are SDSS, whose zero
     /// points are derived from Vega's synthetic AB magnitudes rather than
     /// measured directly, because SDSS is an AB system and has no native Vega
-    /// calibration; `abOffset` reproduces those magnitudes by construction.
+    /// calibration; the magnitudes are those of Takanashi et al. 2017, Table 2
+    /// (arXiv:1610.06396), and `abOffset` reproduces them by construction.
     ///
     /// Zero points for the same nominal band differ by a few percent between
     /// calibrations, so a magnitude is only as good as the band it was measured
@@ -189,8 +191,10 @@ module Photometry =
         let Ks = band "Ks" 2.159<um> 666.7<Jy>
 
         /// SDSS bands, from Vega's synthetic AB magnitudes in each: u 0.951, g
-        /// -0.080, r 0.169, i 0.389, z 0.556. A band is built from the offset
-        /// so that `abOffset` returns it back.
+        /// -0.080, r 0.169, i 0.389, z 0.556. Takanashi et al. 2017, Table 2
+        /// (arXiv:1610.06396), computed from the STSDAS synphot Vega spectrum
+        /// with V = +0.03. A band is built from the offset so that `abOffset`
+        /// returns it back.
         let private sdss name (wavelength: float<um>) (abMinusVega: float<mag>) =
             band name wavelength (abZeroPoint * Magnitude.fluxRatio abMinusVega)
 

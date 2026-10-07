@@ -13,9 +13,8 @@ let ``reduced Planck constant matches CODATA 2018`` () =
     close 1e-9 1.054571817e-34<J s> Constants.hbar
 
 [<Fact>]
-let ``Wien constant agrees with h c / (kB x) at the Wien root`` () =
-    let x = 4.965114231744276
-    close 1e-9 (Constants.h * Constants.c / (Constants.kB * x)) Constants.bWien
+let ``Wien constant matches CODATA 2018`` () =
+    close 1e-9 2.897771955e-3<m K> Constants.bWien
 
 [<Fact>]
 let ``solar mass matches the IAU 2015 nominal GM over CODATA 2018 G`` () =

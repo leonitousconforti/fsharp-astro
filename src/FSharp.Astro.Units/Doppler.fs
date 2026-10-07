@@ -76,7 +76,9 @@ module Doppler =
 
     /// Velocity of a source whose line is observed at the given wavelength,
     /// under a convention. The rest and observed wavelengths share a unit, so
-    /// `1420.0<MHz>` and `21.1<cm>` both work as long as both arguments agree.
+    /// `6562.8<AA>` and `21.1<cm>` both work as long as both arguments agree. A
+    /// frequency does not: the shift is defined the other way up, so
+    /// `1420.0<MHz>` belongs in `velocityOfFrequency`.
     let velocityOfWavelength (convention: DopplerConvention) (rest: float<'u>) (observed: float<'u>) : float<m / s> =
         velocityOfRedshift convention (redshiftOfWavelength rest observed)
 
