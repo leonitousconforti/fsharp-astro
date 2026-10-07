@@ -1,14 +1,10 @@
 <Project>
 
-  <!-- Settings shared by every project in the repository. A project overrides by setting the same
-       property in its own file. -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <!-- NuGet metadata for the packable libraries. Both packages version in lockstep. Knope writes the
-       version when it prepares a release; add a change file in .changeset instead of editing it. -->
   <PropertyGroup>
     <Version>0.0.0</Version>
     <Authors>Leo Conforti</Authors>
@@ -20,7 +16,6 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
-  <!-- Source Link and symbols, so a consumer can step into the published code. -->
   <PropertyGroup>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -32,9 +27,6 @@
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
-  <!-- The F# SDK adds an implicit FSharp.Core reference at this version. Pinned so the type provider
-       loads in editors whose language server bundles this FSharp.Core, and so consumers of the
-       libraries get the lowest workable floor. -->
   <PropertyGroup>
     <FSharpCoreImplicitPackageVersion>10.0.100</FSharpCoreImplicitPackageVersion>
   </PropertyGroup>

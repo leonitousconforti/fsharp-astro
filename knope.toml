@@ -1,29 +1,19 @@
-# Knope drives releases. Change files in .changeset/ decide the next version and the changelog,
-# `knope prepare-release` turns them into a release pull request, and `knope release` tags and
-# publishes when that pull request merges. Both packages share one version, so there is a single
-# [package]. See the Releasing section of README.md.
-
 [package]
 versioned_files = [
   { path = "Directory.Build.props", regex = '<Version>(?<version>[^<]+)</Version>' },
 ]
 changelog = "CHANGELOG.md"
-# release.yml packs into artifacts/ before `knope release` runs, so the packages and their symbol
-# packages are attached to the GitHub release.
 assets = "artifacts/*"
 
 [changes]
-# Only change files bump the version. Commit messages do not, so a release never happens by accident.
 ignore_conventional_commits = true
 
-# `knope document-change` writes a change file interactively.
 [[workflows]]
 name = "document-change"
 
 [[workflows.steps]]
 type = "CreateChangeFile"
 
-# Run by .github/workflows/prepare_release.yml on every push to main that carries change files.
 [[workflows]]
 name = "prepare-release"
 
@@ -56,8 +46,6 @@ Merging this pull request publishes FSharp.Astro.Units and FSharp.Astro.Fits $ve
 $changelog
 """
 
-# Run by .github/workflows/release.yml after the release pull request merges and the packages are
-# on nuget.org. Tags the commit and creates the GitHub release from the changelog entry.
 [[workflows]]
 name = "release"
 
