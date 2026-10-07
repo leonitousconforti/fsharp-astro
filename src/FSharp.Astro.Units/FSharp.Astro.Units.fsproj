@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>FSharp.Astro.Units</AssemblyName>
+    <RootNamespace>FSharp.Astro.Units</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <WarnOn>3390</WarnOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>FSharp.Astro.Units</PackageId>
+    <Description>Units of measure for astronomy in F#: parsecs, arcseconds, janskys, solar masses and magnitudes alongside the SI units, with exactly defined and IAU-nominal conversion factors and constants.</Description>
+    <PackageTags>fsharp;astronomy;units;units-of-measure;astrophysics</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Units.fs" />
+    <Compile Include="Constants.fs" />
+    <Compile Include="Time.fs" />
+    <Compile Include="Angle.fs" />
+    <Compile Include="Sexagesimal.fs" />
+    <Compile Include="Spherical.fs" />
+    <Compile Include="Instant.fs" />
+    <Compile Include="Epoch.fs" />
+    <Compile Include="Length.fs" />
+    <Compile Include="Mass.fs" />
+    <Compile Include="Energy.fs" />
+    <Compile Include="Luminosity.fs" />
+    <Compile Include="Frequency.fs" />
+    <Compile Include="FluxDensity.fs" />
+    <Compile Include="Spectral.fs" />
+    <Compile Include="Doppler.fs" />
+    <Compile Include="Planck.fs" />
+    <Compile Include="Magnitude.fs" />
+    <Compile Include="Photometry.fs" />
+    <Compile Include="Extinction.fs" />
+    <Compile Include="ProperMotion.fs" />
+  </ItemGroup>
+
+</Project>

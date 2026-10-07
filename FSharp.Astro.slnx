@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FSharp.Astro.Units/FSharp.Astro.Units.fsproj" />
+    <Project Path="src/FSharp.Astro.Fits/FSharp.Astro.Fits.fsproj" />
+    <Project Path="src/FSharp.Astro.Fits.TypeProvider/FSharp.Astro.Fits.TypeProvider.fsproj" />
+    <Project Path="src/FSharp.Astro.Fits.TypeProvider.DesignTime/FSharp.Astro.Fits.TypeProvider.DesignTime.fsproj" />
+    <Project Path="src/FSharp.Astro.Fits.UI/FSharp.Astro.Fits.UI.fsproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/FSharp.Astro.Units.Test/FSharp.Astro.Units.Test.fsproj" />
+    <Project Path="test/FSharp.Astro.Fits.Test/FSharp.Astro.Fits.Test.fsproj" />
+  </Folder>
+</Solution>

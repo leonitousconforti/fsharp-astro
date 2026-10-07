@@ -1,0 +1,50 @@
+name: Prepare release
+
+# Keeps one release pull request open whenever change files exist on main. Knope computes the next
+# version from the files in .changeset/, writes CHANGELOG.md, bumps Directory.Build.props, deletes
+# the change files, and opens or updates a pull request from the `release` branch. Merging that
+# pull request runs release.yml.
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+          # A personal access token rather than the built-in token, so that CI runs on the release
+          # pull request. Pushes and pull requests made with the built-in token trigger no workflows.
+          token: ${{ secrets.RELEASE_PAT }}
+
+      - name: Look for change files
+        id: changes
+        run: |
+          if find .changeset -name '*.md' -not -name 'README.md' | grep -q .; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "No change files in .changeset, nothing to prepare."
+          fi
+
+      - name: Configure git
+        if: steps.changes.outputs.found == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - uses: knope-dev/action@19617851f9f13ab2f27a05989c55efb18aca3675 # v2.1.2
+        if: steps.changes.outputs.found == 'true'
+        with:
+          version: 0.23.0
+
+      - name: Open or update the release pull request
+        if: steps.changes.outputs.found == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
+        run: knope prepare-release --verbose

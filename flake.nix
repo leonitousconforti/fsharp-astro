@@ -1,0 +1,28 @@
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  };
+  outputs =
+    { nixpkgs, ... }:
+    let
+      forAllSystems =
+        function:
+        nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (
+          system: function nixpkgs.legacyPackages.${system}
+        );
+    in
+    {
+      devShells = forAllSystems (pkgs: {
+        default = pkgs.mkShell {
+          packages = [
+            pkgs.git
+            pkgs.nixd
+            pkgs.nixfmt
+            pkgs.dotnet-sdk_10
+            pkgs.knope
+          ];
+          DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
+        };
+      });
+    };
+}

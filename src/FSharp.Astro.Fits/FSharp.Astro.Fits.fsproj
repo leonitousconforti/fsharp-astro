@@ -1,0 +1,84 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>FSharp.Astro.Fits</AssemblyName>
+    <RootNamespace>FSharp.Astro.Fits</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <WarnOn>3390</WarnOn>
+    <NoWarn>$(NoWarn);3535;3536</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>FSharp.Astro.Fits</PackageId>
+    <Description>A FITS (Flexible Image Transport System) library for F#. Strict by default, lazy reading, headers that round-trip byte for byte, images, binary tables, checksums, decoders and record mapping.</Description>
+    <PackageTags>fsharp;astronomy;fits;astrophysics</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="FSharp.Astro.Fits.Test" />
+  </ItemGroup>
+
+  <!-- The type provider ships inside this package, so that one package reference gives both the
+       runtime API and FitsProvider. The runtime half goes in lib beside this assembly, because the
+       types every provided property erases to have to be there when the consumer's code runs. The
+       design-time half goes under typeproviders/fsharp41, which is where the compiler looks after
+       reading the TypeProviderAssembly attribute off the runtime half. The compiler loads that
+       half before any of its code can run, and resolves what it needs out of the folder it was
+       loaded from, so everything it references goes there too. Those copies are read by the
+       compiler and never by a consumer, which is what keeps FSharp.TypeProviders.SDK out of the
+       runtime closure of a program that uses FitsProvider.
+
+       Those projects reference this one, so they cannot be ProjectReferences here. The solution
+       builds them after this one; CheckTypeProviderIsBuilt says so plainly when it has not. -->
+  <PropertyGroup>
+    <TypeProviderDir>$(MSBuildThisFileDirectory)..\FSharp.Astro.Fits.TypeProvider\bin\$(Configuration)\$(TargetFramework)\</TypeProviderDir>
+    <DesignTimeDir>$(MSBuildThisFileDirectory)..\FSharp.Astro.Fits.TypeProvider.DesignTime\bin\$(Configuration)\$(TargetFramework)\</DesignTimeDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(TypeProviderDir)FSharp.Astro.Fits.TypeProvider.dll" Pack="true" PackagePath="lib/$(TargetFramework)/" Visible="false" />
+    <None Include="$(TypeProviderDir)FSharp.Astro.Fits.TypeProvider.xml" Pack="true" PackagePath="lib/$(TargetFramework)/" Visible="false" />
+    <None Include="$(DesignTimeDir)FSharp.Astro.Fits.TypeProvider.DesignTime.dll" Pack="true" PackagePath="typeproviders/fsharp41/$(TargetFramework)/" Visible="false" />
+    <None Include="$(DesignTimeDir)FSharp.TypeProviders.SDK.dll" Pack="true" PackagePath="typeproviders/fsharp41/$(TargetFramework)/" Visible="false" />
+    <None Include="$(DesignTimeDir)FSharp.Astro.Fits.TypeProvider.dll" Pack="true" PackagePath="typeproviders/fsharp41/$(TargetFramework)/" Visible="false" />
+    <None Include="$(DesignTimeDir)FSharp.Astro.Fits.dll" Pack="true" PackagePath="typeproviders/fsharp41/$(TargetFramework)/" Visible="false" />
+    <None Include="$(DesignTimeDir)FSharp.Astro.Units.dll" Pack="true" PackagePath="typeproviders/fsharp41/$(TargetFramework)/" Visible="false" />
+  </ItemGroup>
+
+  <Target Name="CheckTypeProviderIsBuilt" BeforeTargets="GenerateNuspec">
+    <Error
+      Condition="!Exists('$(TypeProviderDir)FSharp.Astro.Fits.TypeProvider.dll') Or !Exists('$(DesignTimeDir)FSharp.Astro.Fits.TypeProvider.DesignTime.dll')"
+      Text="The type provider has not been built in $(Configuration), so this package would ship without FitsProvider. Build the solution first: dotnet build -c $(Configuration)" />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FSharp.Astro.Units\FSharp.Astro.Units.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Block.fs" />
+    <Compile Include="Errors.fs" />
+    <Compile Include="Unit.fs" />
+    <Compile Include="Card.fs" />
+    <Compile Include="Header.fs" />
+    <Compile Include="Hdu.fs" />
+    <Compile Include="Image.fs" />
+    <Compile Include="Group.fs" />
+    <Compile Include="Table.fs" />
+    <Compile Include="Ascii.fs" />
+    <Compile Include="Rice.fs" />
+    <Compile Include="Compress.fs" />
+    <Compile Include="Decode.fs" />
+    <Compile Include="Record.fs" />
+    <Compile Include="Measure.fs" />
+    <Compile Include="Checksum.fs" />
+    <Compile Include="Source.fs" />
+    <Compile Include="Fits.fs" />
+  </ItemGroup>
+
+</Project>

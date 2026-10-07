@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The design-time half of the type provider: everything the compiler runs and nothing a
+       compiled program needs. It is packed into typeproviders/fsharp41/ of the FSharp.Astro.Fits
+       package, which is where the compiler looks after reading the TypeProviderAssembly attribute
+       on the runtime half. Keeping it out of lib/ keeps FSharp.TypeProviders.SDK out of the
+       runtime closure of anything that uses FitsProvider. -->
+
+  <PropertyGroup>
+    <AssemblyName>FSharp.Astro.Fits.TypeProvider.DesignTime</AssemblyName>
+    <RootNamespace>FSharp.Astro.Fits.TypeProvider</RootNamespace>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- FS3005: this project references the runtime half, whose TypeProviderAssembly attribute
+         names this one, which does not exist yet while this one is being compiled. -->
+    <NoWarn>$(NoWarn);FS3390;FS3005</NoWarn>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Schema.fs" />
+    <Compile Include="Measures.fs" />
+    <Compile Include="Provider.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FSharp.TypeProviders.SDK" Version="8.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FSharp.Astro.Fits.TypeProvider\FSharp.Astro.Fits.TypeProvider.fsproj" />
+  </ItemGroup>
+
+  <!-- Inside a package the compiler finds the design-time assembly under typeproviders/fsharp41.
+       Across a project reference there is no package, and it looks only beside the runtime
+       assembly, so put a copy there, along with the one dependency a consumer does not have.
+       This project builds after that one, so the copy is safe. -->
+  <Target Name="CopyBesideRuntime" AfterTargets="Build">
+    <Copy
+      SourceFiles="$(TargetPath);$(TargetDir)FSharp.TypeProviders.SDK.dll"
+      DestinationFolder="..\FSharp.Astro.Fits.TypeProvider\bin\$(Configuration)\$(TargetFramework)\"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

@@ -1,0 +1,29 @@
+SIMPLE  =                    T / conforms to FITS standard                      
+BITPIX  =                    8 / number of bits per data pixel                  
+NAXIS   =                    0 / number of data axes                            
+EXTEND  =                    T / extensions may be present                      
+END                                                                             
+XTENSION= 'TABLE   ' / ASCII table extension                                    
+BITPIX  =                    8 / number of bits per data pixel                  
+NAXIS   =                    2 / number of data axes                            
+NAXIS1  =                   32 / length of data axis 1                          
+NAXIS2  =                    2 / length of data axis 2                          
+PCOUNT  =                    0 / number of parameters                           
+GCOUNT  =                    1 / number of groups                               
+TFIELDS =                    4 / number of fields in each row                   
+TBCOL1  =                    1 / beginning column of field                      
+TFORM1  = 'A6      ' / data format of field                                     
+TTYPE1  = 'NAME    ' / label for field                                          
+TBCOL2  =                    8 / beginning column of field                      
+TFORM2  = 'I4      ' / data format of field                                     
+TTYPE2  = 'ID      ' / label for field                                          
+TBCOL3  =                   13 / beginning column of field                      
+TFORM3  = 'F8.3    ' / data format of field                                     
+TTYPE3  = 'RA      ' / label for field                                          
+TUNIT3  = 'deg     ' / physical unit of field                                   
+TBCOL4  =                   22 / beginning column of field                      
+TFORM4  = 'E11.4   ' / data format of field                                     
+TTYPE4  = 'FLUX    ' / label for field                                          
+TUNIT4  = 'mJy     ' / physical unit of field                                   
+EXTNAME = 'ACAT    '                                                            
+END                                                                             

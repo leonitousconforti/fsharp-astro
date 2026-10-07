@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Helpers.fs" />
+    <Compile Include="ConstantsTests.fs" />
+    <Compile Include="TimeTests.fs" />
+    <Compile Include="AngleTests.fs" />
+    <Compile Include="SexagesimalTests.fs" />
+    <Compile Include="SphericalTests.fs" />
+    <Compile Include="InstantTests.fs" />
+    <Compile Include="EpochTests.fs" />
+    <Compile Include="LengthTests.fs" />
+    <Compile Include="MassTests.fs" />
+    <Compile Include="EnergyTests.fs" />
+    <Compile Include="SpectralTests.fs" />
+    <Compile Include="DopplerTests.fs" />
+    <Compile Include="PlanckTests.fs" />
+    <Compile Include="MagnitudeTests.fs" />
+    <Compile Include="PhotometryTests.fs" />
+    <Compile Include="ExtinctionTests.fs" />
+    <Compile Include="ProperMotionTests.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FsCheck" Version="3.4.0" />
+    <PackageReference Include="xunit.v3" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FSharp.Astro.Units\FSharp.Astro.Units.fsproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,39 @@
+# Editor configuration, see http://editorconfig.org
+root=true
+
+# All files
+[*]
+tab_width=4
+indent_size=4
+charset=utf-8
+end_of_line=lf
+indent_style=space
+insert_final_newline=true
+trim_trailing_whitespace=true
+
+# Xml files
+[*.xml]
+tab_width=2
+indent_size=2
+indent_style=space
+
+# FSProj files
+[*.{fsproj,fsxproj,sln,slnx}]
+tab_width=2
+indent_size=2
+indent_style=space
+
+# FSharp source code files
+[*.{fs,fsx,fsi}]
+tab_width=4
+indent_size=4
+indent_style=space
+fsharp_max_record_width=60
+fsharp_max_record_number_of_items=3
+fsharp_keep_max_number_of_blank_lines=1
+fsharp_multiline_bracket_style=stroustrup
+fsharp_multi_line_lambda_closing_newline=true
+fsharp_alternative_long_member_definitions=true
+fsharp_experimental_keep_indent_in_branch = true
+fsharp_blank_lines_around_nested_multiline_expressions=false
+fsharp_newline_before_multiline_computation_expression=false

@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Generators.fs" />
+    <Compile Include="CardTests.fs" />
+    <Compile Include="HeaderTests.fs" />
+    <Compile Include="HduTests.fs" />
+    <Compile Include="ImageTests.fs" />
+    <Compile Include="GroupTests.fs" />
+    <Compile Include="ChecksumTests.fs" />
+    <Compile Include="TableTests.fs" />
+    <Compile Include="DecodeTests.fs" />
+    <Compile Include="AsciiTests.fs" />
+    <Compile Include="RiceTests.fs" />
+    <Compile Include="CompressTests.fs" />
+    <Compile Include="ArchiveTests.fs" />
+    <Compile Include="RecordTests.fs" />
+    <Compile Include="MeasureTests.fs" />
+    <Compile Include="TypeProviderTests.fs" />
+    <Compile Include="FitsTests.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FsCheck" Version="3.4.0" />
+    <PackageReference Include="xunit.v3" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FSharp.Astro.Fits\FSharp.Astro.Fits.fsproj" />
+    <ProjectReference Include="..\..\src\FSharp.Astro.Fits.TypeProvider\FSharp.Astro.Fits.TypeProvider.fsproj" />
+    <!-- The design-time half is never a reference, only something that has to exist before this
+         project compiles, so that the compiler can load FitsProvider out of it. -->
+    <ProjectReference
+      Include="..\..\src\FSharp.Astro.Fits.TypeProvider.DesignTime\FSharp.Astro.Fits.TypeProvider.DesignTime.fsproj"
+      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+</Project>

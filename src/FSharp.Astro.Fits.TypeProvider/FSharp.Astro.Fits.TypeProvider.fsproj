@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The runtime half of the type provider: the handles every provided property erases to. A
+       consumer references this assembly, so it must not drag the provider machinery with it. The
+       design-time half is FSharp.Astro.Fits.TypeProvider.DesignTime, named by the assembly
+       attribute in Runtime.fs. Both are packed into the FSharp.Astro.Fits package. -->
+
+  <PropertyGroup>
+    <AssemblyName>FSharp.Astro.Fits.TypeProvider</AssemblyName>
+    <RootNamespace>FSharp.Astro.Fits.TypeProvider</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <WarnOn>3390</WarnOn>
+    <!-- The compiler probes for the design-time assembly beside the assembly it referenced. A
+         reference assembly lives in obj/ref, where nothing else is, so emit none. -->
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Runtime.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FSharp.Astro.Fits\FSharp.Astro.Fits.fsproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,33 @@
+SIMPLE  =                    T / conforms to FITS standard                      
+BITPIX  =                  -32 / number of bits per data pixel                  
+NAXIS   =                    2 / number of data axes                            
+NAXIS1  =                    2 / length of data axis 1                          
+NAXIS2  =                    2 / length of data axis 2                          
+EXTEND  =                    T / extensions may be present                      
+BUNIT   = 'Jy      ' / physical unit of the pixel values                        
+END                                                                             
+XTENSION= 'BINTABLE' / binary table extension                                   
+BITPIX  =                    8 / number of bits per data pixel                  
+NAXIS   =                    2 / number of data axes                            
+NAXIS1  =                   24 / length of data axis 1                          
+NAXIS2  =                    2 / length of data axis 2                          
+PCOUNT  =                    0 / number of parameters                           
+GCOUNT  =                    1 / number of groups                               
+TFIELDS =                    5 / number of fields in each row                   
+TFORM1  = '1D      ' / data format of field                                     
+TTYPE1  = 'FLUX    ' / label for field                                          
+TUNIT1  = 'mJy     ' / physical unit of field                                   
+TFORM2  = '1E      ' / data format of field                                     
+TTYPE2  = 'RA      ' / label for field                                          
+TUNIT2  = 'deg     ' / physical unit of field                                   
+TFORM3  = '1E      ' / data format of field                                     
+TTYPE3  = 'FLAM    ' / label for field                                          
+TUNIT3  = 'erg s-1 cm-2 Angstrom-1' / physical unit of field                    
+TFORM4  = '1E      ' / data format of field                                     
+TTYPE4  = 'SB      ' / label for field                                          
+TUNIT4  = 'Jy/beam ' / physical unit of field                                   
+TFORM5  = '1J      ' / data format of field                                     
+TTYPE5  = 'NPIX    ' / label for field                                          
+TUNIT5  = 'pixel   ' / physical unit of field                                   
+EXTNAME = 'UNITS   '                                                            
+END                                                                             
