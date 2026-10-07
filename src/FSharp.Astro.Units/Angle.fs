@@ -2,7 +2,8 @@ namespace FSharp.Astro.Units
 
 open System
 
-/// Angle units, their factors to the radian, and trigonometry that keeps the units honest.
+/// Angle units, their factors to the radian, and trigonometry that keeps the
+/// units honest.
 [<RequireQualifiedAccess>]
 module Angle =
 
@@ -46,7 +47,8 @@ module Angle =
     /// Inverse tangent, in radians.
     let atan (x: float) : float<rad> = Math.Atan x * 1.0<rad>
 
-    /// Two-argument inverse tangent of two lengths in the same unit, in radians.
+    /// Two-argument inverse tangent of two lengths in the same unit, in
+    /// radians.
     let atan2 (y: float<'u>) (x: float<'u>) : float<rad> = Math.Atan2(float y, float x) * 1.0<rad>
 
     /// Wraps an angle into [0, period). The period carries the unit, so
@@ -56,13 +58,14 @@ module Angle =
 
         if r < 0.0<_> then
             let shifted = r + period
-            // A tiny negative remainder can round back up to exactly one period.
+            // A tiny negative remainder can round back up to exactly one
+            // period.
             if shifted >= period then 0.0<_> else shifted
         else
             r
 
-    /// Wraps an angle into [-period/2, period/2), the convention for longitudes and hour angles
-    /// measured from a meridian.
+    /// Wraps an angle into [-period/2, period/2), the convention for longitudes
+    /// and hour angles measured from a meridian.
     let wrapSigned (period: float<'u>) (x: float<'u>) : float<'u> =
         let half = period / 2.0
         wrap period (x + half) - half

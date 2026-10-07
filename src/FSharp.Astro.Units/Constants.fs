@@ -4,10 +4,11 @@ open System
 
 /// Physical and astronomical constants with their units attached.
 ///
-/// Values are the exact defining constants of the 2019 SI, the 2018 CODATA recommended values for
-/// everything measured, and the IAU 2015 Resolution B3 nominal conversion constants for the Sun,
-/// Earth and Jupiter. A nominal value is a fixed number the IAU chose so that results stay
-/// comparable between papers. It is not a measurement, so `Rsun` is exactly 6.957e8 m.
+/// Values are the exact defining constants of the 2019 SI, the 2018 CODATA
+/// recommended values for everything measured, and the IAU 2015 Resolution B3
+/// nominal conversion constants for the Sun, Earth and Jupiter. A nominal value
+/// is a fixed number the IAU chose so that results stay comparable between
+/// papers. It is not a measurement, so `Rsun` is exactly 6.957e8 m.
 [<RequireQualifiedAccess>]
 module Constants =
 
@@ -26,7 +27,8 @@ module Constants =
     /// Boltzmann constant. Exact.
     let kB: float<J / K> = 1.380649e-23<J / K>
 
-    /// Stefan-Boltzmann constant, 2 pi^5 kB^4 / (15 h^3 c^2). Exact, computed from its definition.
+    /// Stefan-Boltzmann constant, 2 pi^5 kB^4 / (15 h^3 c^2). Exact, computed
+    /// from its definition.
     let sigmaSB: float<W / (m^2 K^4)> =
         2.0 * Math.PI ** 5.0 * (kB * kB * kB * kB) / (15.0 * (h * h * h) * (c * c))
 
@@ -42,7 +44,8 @@ module Constants =
     /// Neutron mass. CODATA 2018.
     let neutronMass: float<kg> = 1.67492749804e-27<kg>
 
-    /// Atomic mass constant, one twelfth of the mass of a carbon-12 atom. CODATA 2018.
+    /// Atomic mass constant, one twelfth of the mass of a carbon-12 atom.
+    /// CODATA 2018.
     let atomicMassUnit: float<kg> = 1.66053906660e-27<kg>
 
     /// Thomson cross section. CODATA 2018.
@@ -51,7 +54,8 @@ module Constants =
     /// Nominal solar mass parameter GM. IAU 2015 B3.
     let GMsun: float<m^3 / s^2> = 1.3271244e20<m^3 / s^2>
 
-    /// Solar mass, GMsun / G. Inherits the relative uncertainty of G, about 2e-5.
+    /// Solar mass, GMsun / G. Inherits the relative uncertainty of G, about
+    /// 2e-5.
     let Msun: float<kg> = GMsun / G
 
     /// Nominal solar radius. IAU 2015 B3.

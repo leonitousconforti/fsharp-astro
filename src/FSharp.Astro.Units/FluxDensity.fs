@@ -1,7 +1,7 @@
 namespace FSharp.Astro.Units
 
-/// Spectral flux density per unit frequency, and the factors that relate the jansky to the SI unit
-/// W/(m^2 Hz).
+/// Spectral flux density per unit frequency, and the factors that relate the
+/// jansky to the SI unit W/(m^2 Hz).
 [<RequireQualifiedAccess>]
 module FluxDensity =
 

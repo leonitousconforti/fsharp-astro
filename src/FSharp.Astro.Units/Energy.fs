@@ -7,7 +7,8 @@ module Energy =
     /// Joules in one erg.
     let joulesPerErg: float<J / erg> = 1e-7<J / erg>
 
-    /// Joules in one electron volt. Exact since the 2019 SI fixed the elementary charge.
+    /// Joules in one electron volt. Exact since the 2019 SI fixed the
+    /// elementary charge.
     let joulesPerElectronVolt: float<J / eV> = 1.602176634e-19<J / eV>
 
     /// Joules in one kiloelectron volt.

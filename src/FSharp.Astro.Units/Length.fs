@@ -31,7 +31,8 @@ module Length =
     let metersPerLightYear: float<m / ly> =
         Constants.c * Time.secondsPerYear * 1.0<yr / ly>
 
-    /// Meters in one parsec. The IAU 2015 Resolution B2 definition is exactly 648000/pi au.
+    /// Meters in one parsec. The IAU 2015 Resolution B2 definition is exactly
+    /// 648000/pi au.
     let metersPerParsec: float<m / pc> = 648000.0 / Math.PI * metersPerAu * 1.0<au / pc>
 
     /// Meters in one kiloparsec.
@@ -52,8 +53,8 @@ module Length =
     /// Meters in one nominal equatorial Jupiter radius.
     let metersPerJupiterRadius: float<m / Rjup> = Constants.Rjup / 1.0<Rjup>
 
-    /// Distance from a trigonometric parallax, d = 1/p. Valid for the small angles where the
-    /// parsec is defined; a parallax of 1 arcsec is 1 pc.
+    /// Distance from a trigonometric parallax, d = 1/p. Valid for the small
+    /// angles where the parsec is defined; a parallax of 1 arcsec is 1 pc.
     let ofParallax (parallax: float<arcsec>) : float<pc> = 1.0<pc arcsec> / parallax
 
     /// Trigonometric parallax of a source at the given distance, p = 1/d.

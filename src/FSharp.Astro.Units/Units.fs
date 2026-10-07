@@ -1,22 +1,5 @@
 namespace FSharp.Astro.Units
 
-// Every unit of measure this library speaks. Open FSharp.Astro.Units and write 3.2<pc>, 0.5<arcsec>
-// or 1.4e-3<Jy>.
-//
-// F# erases units at compile time, so a float<pc> is a plain float in the compiled assembly and
-// costs nothing at runtime. A unit also carries no scale: pc and ly are unrelated types until a
-// conversion factor such as Length.metersPerParsec relates them. The quantity modules (Length,
-// Angle, Time, ...) hold those factors.
-//
-// Names follow the SI symbols and IAU recommendations, with ASCII spellings where a symbol needs
-// one: um for micrometre, uas for microarcsecond, AA for angstrom.
-
-// ---------------------------------------------------------------------------------------------
-// SI units, re-exported from FSharp.Core so one `open FSharp.Astro.Units` is enough. Each is the
-// same measure as its namesake in FSharp.Data.UnitSystems.SI.UnitSymbols, so values flow between
-// this library and any other F# code that uses the standard SI units.
-// ---------------------------------------------------------------------------------------------
-
 /// Meter, the SI unit of length.
 [<Measure>]
 type m = Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols.m
@@ -54,8 +37,9 @@ type J = Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols.J
 type W = Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols.W
 
 // ---------------------------------------------------------------------------------------------
-// Angle. The SI treats the radian as dimensionless, but keeping it as a unit stops an angle from
-// being mistaken for a plain number or an angle in degrees for one in radians.
+// Angle. The SI treats the radian as dimensionless, but keeping it as a unit
+// stops an angle from being mistaken for a plain number or an angle in degrees
+// for one in radians.
 // ---------------------------------------------------------------------------------------------
 
 /// Radian.
@@ -178,7 +162,8 @@ type h
 [<Measure>]
 type d
 
-/// Julian year, exactly 365.25 days. The year of light years, proper motions and ages.
+/// Julian year, exactly 365.25 days. The year of light years, proper motions
+/// and ages.
 [<Measure>]
 type yr
 
@@ -202,15 +187,18 @@ type Gyr
 [<Measure>]
 type g
 
-/// Solar mass, derived from the IAU 2015 nominal GM of the Sun and the CODATA value of G.
+/// Solar mass, derived from the IAU 2015 nominal GM of the Sun and the CODATA
+/// value of G.
 [<Measure>]
 type Msun
 
-/// Earth mass, derived from the IAU 2015 nominal GM of the Earth and the CODATA value of G.
+/// Earth mass, derived from the IAU 2015 nominal GM of the Earth and the CODATA
+/// value of G.
 [<Measure>]
 type Mearth
 
-/// Jupiter mass, derived from the IAU 2015 nominal GM of Jupiter and the CODATA value of G.
+/// Jupiter mass, derived from the IAU 2015 nominal GM of Jupiter and the CODATA
+/// value of G.
 [<Measure>]
 type Mjup
 
@@ -282,17 +270,20 @@ type uJy
 // Logarithmic quantities.
 // ---------------------------------------------------------------------------------------------
 
-/// Astronomical magnitude. A difference of 5 mag is a factor of exactly 100 in flux.
+/// Astronomical magnitude. A difference of 5 mag is a factor of exactly 100 in
+/// flux.
 [<Measure>]
 type mag
 
 // ---------------------------------------------------------------------------------------------
-// Instants, as opposed to the durations above. A Julian Date is a point on a timeline, so the
-// factors that relate these to each other are offsets rather than ratios and live in `Epoch`
-// instead of a `convert`. Subtracting two instants gives a duration in days.
+// Instants, as opposed to the durations above. A Julian Date is a point on a
+// timeline, so the factors that relate these to each other are offsets rather
+// than ratios and live in `Epoch` instead of a `convert`. Subtracting two
+// instants gives a duration in days.
 // ---------------------------------------------------------------------------------------------
 
-/// Julian Date, days elapsed since noon on 1 January 4713 BC in the proleptic Julian calendar.
+/// Julian Date, days elapsed since noon on 1 January 4713 BC in the proleptic
+/// Julian calendar.
 [<Measure>]
 type jd
 
@@ -304,6 +295,7 @@ type mjd
 [<Measure>]
 type jyear
 
-/// Besselian epoch in years, the B of B1950.0. One byear is a tropical year at B1900.0.
+/// Besselian epoch in years, the B of B1950.0. One byear is a tropical year at
+/// B1900.0.
 [<Measure>]
 type byear

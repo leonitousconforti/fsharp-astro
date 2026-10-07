@@ -2,8 +2,9 @@ namespace FSharp.Astro.Units
 
 /// Time units and the factors that relate them to the second.
 ///
-/// The year here is the Julian year of exactly 365.25 days, which is what the IAU uses for light
-/// years, proper motions and ages. Calendar, tropical and sidereal years are different quantities.
+/// The year here is the Julian year of exactly 365.25 days, which is what the
+/// IAU uses for light years, proper motions and ages. Calendar, tropical and
+/// sidereal years are different quantities.
 [<RequireQualifiedAccess>]
 module Time =
 

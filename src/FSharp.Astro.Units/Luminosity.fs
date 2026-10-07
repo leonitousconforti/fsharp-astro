@@ -14,7 +14,8 @@ module Luminosity =
     let flux (luminosity: float<W>) (distance: float<m>) : float<W / m^2> =
         luminosity / (4.0 * System.Math.PI * distance * distance)
 
-    /// Luminosity of an isotropic source from its bolometric flux at a distance, 4 pi d^2 F.
+    /// Luminosity of an isotropic source from its bolometric flux at a
+    /// distance, 4 pi d^2 F.
     let ofFlux (flux: float<W / m^2>) (distance: float<m>) : float<W> =
         4.0 * System.Math.PI * distance * distance * flux
 
