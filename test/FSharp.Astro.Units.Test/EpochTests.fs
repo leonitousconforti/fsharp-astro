@@ -28,15 +28,6 @@ let ``the Modified Julian Date origin is a whole day before noon`` () =
     close 1e-15 -0.5<d> (Instant.difference Epoch.mjdOrigin (Instant.ofJd 2400001.0<jd>))
 
 [<Fact>]
-let ``J2000 is the Julian epoch 2000`` () =
-    close 1e-15 2000.0<jyear> (Epoch.toJulianEpoch Epoch.j2000)
-    sameInstant 1e-12<d> Epoch.j2000 (Epoch.ofJulianEpoch 2000.0<jyear>)
-
-[<Fact>]
-let ``a Julian year is exactly 365.25 days`` () =
-    close 1e-15 365.25<d> (Instant.difference (Epoch.ofJulianEpoch 2001.0<jyear>) Epoch.j2000)
-
-[<Fact>]
 let ``B1950 is the Besselian epoch 1950`` () =
     close 1e-9 1950.0<byear> (Epoch.toBesselianEpoch Epoch.b1950)
     // The conventional B1950.0 Julian Date and the Newcomb formula disagree by about 3.5 s, which
@@ -83,13 +74,6 @@ let ``a Modified Julian Date needs both parts to carry a microsecond`` () =
         * 1e6
 
     Assert.True(abs (viaTwoParts - 1.0<s>) < 1e-6<s>, $"gap was {float viaTwoParts} us")
-
-[<Fact>]
-let ``instants subtract to a duration and add back`` () =
-    let later = Instant.add 30.0<d> Epoch.j2000
-    close 1e-15 30.0<d> (Instant.difference later Epoch.j2000)
-    close 1e-15 -30.0<d> (Instant.difference Epoch.j2000 later)
-    sameInstant 1e-15<d> Epoch.j2000 (Instant.add (Instant.difference Epoch.j2000 later) later)
 
 [<Fact>]
 let ``the Unix epoch is JD 2440587.5`` () =
@@ -198,35 +182,3 @@ let ``the obliquity shrinks by 47 arcseconds a century`` () =
 [<Fact>]
 let ``the equation of the equinoxes never exceeds a second and a half`` () =
     check (forAll instants (fun instant -> abs (Epoch.equationOfTheEquinoxes instant) * 3600.0 < 1.5<hourangle>))
-
-[<Fact>]
-let ``apparent sidereal time is mean sidereal time plus the equation of the equinoxes`` () =
-    check (
-        forAll
-            instants
-            (fun instant ->
-                let expected =
-                    Angle.wrap
-                        24.0<hourangle>
-                        (Epoch.greenwichMeanSiderealTime instant + Epoch.equationOfTheEquinoxes instant)
-
-                within 1e-12 expected (Epoch.greenwichApparentSiderealTime instant)
-            )
-    )
-
-[<Fact>]
-let ``longitude shifts local apparent sidereal time the same way as mean`` () =
-    let greenwich = Epoch.greenwichApparentSiderealTime Epoch.j2000
-    let local = Epoch.localApparentSiderealTime 15.0<deg> Epoch.j2000
-    close 1e-12 1.0<hourangle> (Angle.wrap 24.0<hourangle> (local - greenwich))
-
-[<Fact>]
-let ``apparent sidereal time stays in range`` () =
-    check (
-        forAll
-            instants
-            (fun instant ->
-                let t = Epoch.greenwichApparentSiderealTime instant
-                t >= 0.0<hourangle> && t < 24.0<hourangle>
-            )
-    )

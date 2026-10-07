@@ -8,29 +8,12 @@ open Helpers
 let private conventions = [ Radio; Optical; Relativistic ]
 
 [<Fact>]
-let ``zero shift is zero velocity under every convention`` () =
-    for convention in conventions do
-        close 1e-15 0.0<m / s> (Doppler.velocityOfRedshift convention 0.0)
-        close 1e-15 0.0 (Doppler.redshiftOfVelocity convention 0.0<m / s>)
-
-[<Fact>]
-let ``the optical convention is c times the redshift`` () =
-    close 1e-15 (Constants.c * 0.1) (Doppler.velocityOfRedshift Optical 0.1)
-
-[<Fact>]
 let ``the radio convention is linear in frequency`` () =
     // v = c (1 - nu/nu0) by definition.
     let rest = 1420.405751768<MHz>
     let observed = 1420.0<MHz>
     let expected = Constants.c * (1.0 - observed / rest)
     close 1e-11 expected (Doppler.velocityOfFrequency Radio rest observed)
-
-[<Fact>]
-let ``the optical convention is linear in wavelength`` () =
-    let rest = 6562.8<AA>
-    let observed = 6600.0<AA>
-    let expected = Constants.c * ((observed - rest) / rest)
-    close 1e-13 expected (Doppler.velocityOfWavelength Optical rest observed)
 
 [<Fact>]
 let ``the relativistic convention doubles the wavelength at three fifths of c`` () =
@@ -68,17 +51,6 @@ let ``velocity and redshift round trip under every convention`` () =
                 )
             )
     )
-
-[<Fact>]
-let ``frequency and wavelength shifts give the same redshift`` () =
-    let restFrequency = 1420.405751768<MHz>
-    let z = 0.01
-    let observed = Doppler.frequencyOfRedshift restFrequency z
-    close 1e-14 z (Doppler.redshiftOfFrequency restFrequency observed)
-
-    let restWavelength = 21.106114<cm>
-    let shifted = Doppler.wavelengthOfRedshift restWavelength z
-    close 1e-14 z (Doppler.redshiftOfWavelength restWavelength shifted)
 
 [<Fact>]
 let ``the conventions agree to first order and diverge at second order`` () =

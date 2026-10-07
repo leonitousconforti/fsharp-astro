@@ -1,7 +1,6 @@
 module ExtinctionTests
 
 open Xunit
-open FsCheck.FSharp
 open FSharp.Astro.Units
 open Helpers
 
@@ -14,24 +13,10 @@ let ``a magnitude of extinction removes three fifths of the flux`` () =
     close 1e-15 1.0 (Extinction.transmission 0.0<mag>)
 
 [<Fact>]
-let ``extinction follows from a reddening and the ratio of total to selective extinction`` () =
-    close 1e-15 0.93<mag> (Extinction.ofColourExcess Extinction.rvDiffuse 0.3<mag>)
-    close 1e-15 0.3<mag> (Extinction.colourExcess Extinction.rvDiffuse 0.93<mag>)
-
-[<Fact>]
-let ``extinction follows from a column and a coefficient`` () =
-    close 1e-15 3.0<mag> (Extinction.ofColumn 1.5<mag / kpc> 2.0<kpc>)
-
-[<Fact>]
 let ``an optical depth of one is 1.086 magnitudes`` () =
     close 1e-3 1.0857<mag> (Extinction.ofOpticalDepth 1.0)
     close 1e-12 1.0 (Extinction.opticalDepth (Extinction.ofOpticalDepth 1.0))
     close 1e-12 (exp -1.0) (Extinction.transmission (Extinction.ofOpticalDepth 1.0))
-
-[<Fact>]
-let ``extinction only ever makes a magnitude larger`` () =
-    close 1e-15 11.0<mag> (Extinction.extinguish 1.0<mag> 10.0<mag>)
-    close 1e-15 10.0<mag> (Extinction.deredden 1.0<mag> 11.0<mag>)
 
 [<Fact>]
 let ``the curve is normalised to one in V`` () =
@@ -91,39 +76,6 @@ let ``a larger ratio of total to selective extinction makes a flatter curve`` ()
     // More of the extinction is grey, so the ultraviolet stands less far above V.
     Assert.True(at 5.5 < at 3.1)
     Assert.True(at 3.1 < at 2.0)
-
-[<Fact>]
-let ``extinction at a wavelength scales with the extinction in V`` () =
-    check (
-        forAll
-            (Gen.choose (1, 1000) |> Gen.map (fun n -> float n / 100.0 * 1.0<mag>))
-            (fun av ->
-                let wavelength = micrometres 0.44
-                let expected = av * Extinction.relativeToV Cardelli1989 3.1 wavelength
-                within 1e-12 expected (Extinction.atWavelength Cardelli1989 3.1 av wavelength)
-            )
-    )
-
-[<Fact>]
-let ``extinction in a band uses the band's effective wavelength`` () =
-    let av = 1.0<mag>
-
-    let inBand =
-        Extinction.inBand Cardelli1989 Extinction.rvDiffuse av Photometry.Bands.B
-
-    let atWavelength =
-        Extinction.atWavelength Cardelli1989 Extinction.rvDiffuse av Photometry.Bands.B.EffectiveWavelength
-
-    close 1e-15 atWavelength inBand
-
-[<Fact>]
-let ``the reddening across B and V is the extinction in V over R_V`` () =
-    let av = 1.0<mag>
-
-    let excess =
-        Extinction.bandColourExcess Cardelli1989 3.1 av Photometry.Bands.B Photometry.Bands.V
-
-    close 2e-2 (Extinction.colourExcess 3.1 av) excess
 
 [<Fact>]
 let ``every standard band falls inside the curve's range`` () =

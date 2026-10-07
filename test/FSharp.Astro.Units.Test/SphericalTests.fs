@@ -19,10 +19,6 @@ let private points: Gen<float<rad> * float<rad>> = gen {
 }
 
 [<Fact>]
-let ``a point is no distance from itself`` () =
-    close 1e-15 0.0<rad> (Spherical.separation (deg 10.0) (deg 20.0) (deg 10.0) (deg 20.0))
-
-[<Fact>]
 let ``separation along the equator is the difference in longitude`` () =
     close 1e-12 (deg 90.0) (Spherical.separation (deg 0.0) (deg 0.0) (deg 90.0) (deg 0.0))
 

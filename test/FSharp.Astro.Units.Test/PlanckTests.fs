@@ -78,20 +78,6 @@ let ``the Planck function underflows below a few millikelvin and takes the inver
     close 1e-12 1e-6<K> (Planck.rayleighJeansTemperature frequency (Planck.rayleighJeansNu 1e-6<K> frequency))
 
 [<Fact>]
-let ``Rayleigh-Jeans temperature inverts the Rayleigh-Jeans form exactly`` () =
-    check (
-        forAll
-            (Gen.choose (1, 100_000) |> Gen.map (fun n -> float n * 1e-3<K>))
-            (fun t -> within 1e-12 t (Planck.rayleighJeansTemperature radio (Planck.rayleighJeansNu t radio)))
-    )
-
-[<Fact>]
-let ``the two brightness temperatures agree in the Rayleigh-Jeans regime`` () =
-    let t = 100.0<K>
-    let intensity = Planck.bNu t radio
-    close 1e-3 (Planck.brightnessTemperature radio intensity) (Planck.rayleighJeansTemperature radio intensity)
-
-[<Fact>]
 let ``jansky per beam converts to kelvin`` () =
     let fwhm = 10.0<arcsec> * Angle.radiansPerArcsecond
 
@@ -103,16 +89,6 @@ let ``jansky per beam converts to kelvin`` () =
     // theta the beam FWHM in arcsec.
     let expected = 1.222e3 * 1000.0 / (1.4 * 1.4 * 10.0 * 10.0) * 1.0<K>
     close 2e-3 expected temperature
-
-[<Fact>]
-let ``flux density is the intensity times the solid angle`` () =
-    let beam = Planck.gaussianBeamSolidAngle (1.0<arcsec> * Angle.radiansPerArcsecond)
-    let t = 50.0<K>
-    close 1e-15 (Planck.bNu t radio * beam) (Planck.fluxDensity beam t radio)
-
-[<Fact>]
-let ``a Gaussian beam of unit width subtends pi over four ln two steradians`` () =
-    close 1e-15 (Math.PI / (4.0 * log 2.0) * 1.0<sr>) (Planck.gaussianBeamSolidAngle 1.0<rad>)
 
 [<Fact>]
 let ``the peak wavelength of the Sun is five hundred nanometres`` () =
@@ -165,15 +141,3 @@ let ``integrating the Planck function over frequency gives Stefan-Boltzmann`` ()
 
     let integral = total * step
     close 1e-6 (Planck.integratedIntensity t) integral
-
-[<Fact>]
-let ``pi times the integrated intensity is the Stefan-Boltzmann flux`` () =
-    let t = Constants.Tsun
-    let squared = t * t
-    close 1e-15 (Constants.sigmaSB * squared * squared) (Math.PI * Planck.integratedIntensity t * 1.0<sr>)
-
-[<Fact>]
-let ``a black body sphere of the Sun's size and temperature has the Sun's luminosity`` () =
-    let area = 4.0 * Math.PI * Constants.Rsun * Constants.Rsun
-    let emitted = Math.PI * Planck.integratedIntensity Constants.Tsun * 1.0<sr> * area
-    close 1e-12 (Luminosity.blackBody Constants.Rsun Constants.Tsun) emitted

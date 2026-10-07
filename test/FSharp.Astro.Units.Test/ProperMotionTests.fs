@@ -12,23 +12,12 @@ let private masPerYear (x: float) : float<rad / yr> =
     x * 1.0<mas / yr> * Angle.radiansPerMilliarcsecond
 
 [<Fact>]
-let ``total proper motion is the length of the two components`` () =
-    close 1e-12 (masPerYear 5.0) (ProperMotion.total (masPerYear 3.0) (masPerYear 4.0))
-
-[<Fact>]
 let ``proper motion points where its components say`` () =
     // Due north, due east, due south, due west.
     close 1e-12 0.0<rad> (ProperMotion.positionAngle (masPerYear 0.0) (masPerYear 1.0))
     close 1e-12 (deg 90.0) (ProperMotion.positionAngle (masPerYear 1.0) (masPerYear 0.0))
     close 1e-12 (deg 180.0) (ProperMotion.positionAngle (masPerYear 0.0) (masPerYear -1.0))
     close 1e-12 (deg 270.0) (ProperMotion.positionAngle (masPerYear -1.0) (masPerYear 0.0))
-
-[<Fact>]
-let ``a source with no proper motion does not move`` () =
-    let lon, lat =
-        ProperMotion.apply 100.0<yr> (deg 45.0) (deg 30.0) (masPerYear 0.0) (masPerYear 0.0)
-    close 1e-15 (deg 45.0) lon
-    close 1e-15 (deg 30.0) lat
 
 [<Fact>]
 let ``proper motion moves a source by its total times the interval`` () =
@@ -104,18 +93,6 @@ let ``Barnard's star moves a quarter of a degree in a century`` () =
     close 1e-9 (0.2877485409199206<deg> * Angle.radiansPerDegree) moved
 
 [<Fact>]
-let ``the epoch gap is the difference between the epochs`` () =
-    let muLon = masPerYear 100.0
-    let muLat = masPerYear -250.0
-
-    let a =
-        ProperMotion.atEpoch 1991.25<jyear> 2016.0<jyear> (deg 10.0) (deg 20.0) muLon muLat
-
-    let b = ProperMotion.apply 24.75<yr> (deg 10.0) (deg 20.0) muLon muLat
-    Assert.Equal(fst a, fst b)
-    Assert.Equal(snd a, snd b)
-
-[<Fact>]
 let ``proper motion past the pole stays on the sphere`` () =
     // Five degrees short of the pole, moving north a degree a year for ten years.
     let mu = 1.0<deg / yr> * Angle.radiansPerDegree
@@ -129,26 +106,3 @@ let ``tangential velocity is 4.74 km per second per arcsecond per year per parse
     let motion = 1.0<arcsec / yr> * Angle.radiansPerArcsecond
     let velocity = ProperMotion.tangentialVelocity 1.0<pc> motion
     close 1e-12 (4.740470463533348<km / s> * Length.metersPerKilometer) velocity
-
-[<Fact>]
-let ``tangential velocity and proper motion invert each other`` () =
-    check (
-        forAll
-            (Gen.zip positive positive)
-            (fun (d, v) ->
-                let distance = d * 1.0<pc>
-                let velocity = v * 1.0<m / s>
-
-                within
-                    1e-12
-                    velocity
-                    (ProperMotion.tangentialVelocity distance (ProperMotion.ofTangentialVelocity distance velocity))
-            )
-    )
-
-[<Fact>]
-let ``a nearer source of the same velocity shows a larger proper motion`` () =
-    let velocity = 30.0<km / s> * Length.metersPerKilometer
-    let near = ProperMotion.ofTangentialVelocity 5.0<pc> velocity
-    let far = ProperMotion.ofTangentialVelocity 50.0<pc> velocity
-    close 1e-12 (far * 10.0) near

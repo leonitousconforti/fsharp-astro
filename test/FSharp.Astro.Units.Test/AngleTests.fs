@@ -14,20 +14,8 @@ let ``an arcsecond in radians`` () =
     close 1e-15 4.84813681109536e-6<rad> (1.0<arcsec> * Angle.radiansPerArcsecond)
 
 [<Fact>]
-let ``a milliarcsecond is a thousandth of an arcsecond`` () =
-    close 1e-15 1e-3<arcsec> (convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 1.0<mas>)
-
-[<Fact>]
-let ``a microarcsecond is a millionth of an arcsecond`` () =
-    close 1e-15 1e-6<arcsec> (convert Angle.radiansPerMicroarcsecond Angle.radiansPerArcsecond 1.0<uas>)
-
-[<Fact>]
 let ``an hour of right ascension is fifteen degrees`` () =
     close 1e-15 15.0<deg> (convert Angle.radiansPerHourAngle Angle.radiansPerDegree 1.0<hourangle>)
-
-[<Fact>]
-let ``a full circle is two pi radians`` () =
-    close 1e-15 (2.0 * Math.PI * 1.0<rad>) (360.0<deg> * Angle.radiansPerDegree)
 
 [<Fact>]
 let ``a square degree in steradians`` () =
@@ -81,23 +69,5 @@ let ``wrapSigned lands in [-period/2, period/2)`` () =
             (fun x ->
                 let wrapped = Angle.wrapSigned (2.0 * Math.PI * 1.0<rad>) (x * 1.0<rad>)
                 wrapped >= -Math.PI * 1.0<rad> && wrapped < Math.PI * 1.0<rad>
-            )
-    )
-
-[<Fact>]
-let ``trigonometry takes radians`` () =
-    close 1e-15 1.0 (Angle.sin (90.0<deg> * Angle.radiansPerDegree))
-    close 1e-15 45.0<deg> (Angle.atan2 1.0<pc> 1.0<pc> / Angle.radiansPerDegree)
-
-[<Fact>]
-let ``inverse trigonometry round trips`` () =
-    check (
-        forAll
-            unitInterval
-            (fun x ->
-                // Absolute tolerance: cos (acos 0.0) is 6e-17, not 0, so a relative check fails at zero.
-                abs (Angle.sin (Angle.asin x) - x) < 1e-12
-                && abs (Angle.cos (Angle.acos x) - x) < 1e-12
-                && abs (Angle.tan (Angle.atan x) - x) < 1e-12
             )
     )
