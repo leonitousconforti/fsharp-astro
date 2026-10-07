@@ -75,6 +75,22 @@ module Extinction =
     /// Longest wavelength any curve here covers, `1/0.3` micrometres.
     let longestWavelength: float<m> = 1e-6<m> / 0.3
 
+    /// Coefficients of CCM89 equation 3a, the optical and near infrared `a`,
+    /// by ascending power of `y = 1/lambda - 1.82`.
+    let private opticalA = [| 1.0; 0.17699; -0.50447; -0.02427; 0.72085; 0.01979; -0.77530; 0.32999 |]
+
+    /// Coefficients of CCM89 equation 3b, the optical and near infrared `b`,
+    /// by ascending power of `y = 1/lambda - 1.82`.
+    let private opticalB = [| 0.0; 1.41338; 2.28305; 1.07233; -5.38434; -0.62251; 5.30260; -2.09002 |]
+
+    /// Coefficients of CCM89 equation 5, the far ultraviolet `a`, by ascending
+    /// power of `y = 1/lambda - 8`.
+    let private farUltravioletA = [| -1.073; -0.628; 0.137; -0.070 |]
+
+    /// Coefficients of CCM89 equation 5, the far ultraviolet `b`, by ascending
+    /// power of `y = 1/lambda - 8`.
+    let private farUltravioletB = [| 13.670; 4.257; -0.420; 0.374 |]
+
     /// The two CCM89 coefficients at an inverse wavelength in reciprocal
     /// micrometres, such that `A(lambda)/A(V)` is `a + b/R_V`. Cardelli,
     /// Clayton and Mathis 1989, equations 2 to 5.
@@ -87,23 +103,7 @@ module Extinction =
             // Optical and near infrared, equations 3a and 3b, about the 1.82
             // that normalises the curve to exactly one in V.
             let y = x - 1.82
-
-            let a =
-                1.0
-                + y
-                  * (0.17699
-                     + y
-                       * (-0.50447
-                          + y * (-0.02427 + y * (0.72085 + y * (0.01979 + y * (-0.77530 + y * 0.32999))))))
-
-            let b =
-                y
-                * (1.41338
-                   + y
-                     * (2.28305
-                        + y * (1.07233 + y * (-5.38434 + y * (-0.62251 + y * (5.30260 + y * -2.09002))))))
-
-            a, b
+            Polynomial.horner opticalA y, Polynomial.horner opticalB y
         elif x < 8.0 then
             // Ultraviolet, equation 4, with the 2175 angstrom bump in the
             // Lorentzian terms and the far ultraviolet rise folded in above 5.9
@@ -121,7 +121,7 @@ module Extinction =
         else
             // Far ultraviolet, equation 5.
             let y = x - 8.0
-            -1.073 + y * (-0.628 + y * (0.137 + y * -0.070)), 13.670 + y * (4.257 + y * (-0.420 + y * 0.374))
+            Polynomial.horner farUltravioletA y, Polynomial.horner farUltravioletB y
 
     /// `A(lambda)/A(V)` for a curve and a ratio of total to selective
     /// extinction, or `None` if the wavelength is outside the curve's range.

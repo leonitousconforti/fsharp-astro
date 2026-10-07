@@ -159,15 +159,11 @@ module Epoch =
     /// is the Earth's rotation period proper.
     let meanStellarDay: float<s> = Time.secondsPerDay * 1.0<d> / stellarPerSolar
 
-    /// Precession in right ascension accumulated since J2000, the polynomial
-    /// that turns the Earth rotation angle into Greenwich mean sidereal time in
-    /// the IAU 2006 expression of Capitaine, Wallace and Chapront 2003. In
-    /// arcseconds, as a function of Julian centuries from J2000.
-    let private precessionInRightAscension (t: float) : float =
-        0.014506
-        + t
-          * (4612.156534
-             + t * (1.3915817 + t * (-0.00000044 + t * (-0.000029956 + t * -0.0000000368))))
+    /// Coefficients of the IAU 2006 polynomial for the precession in right
+    /// ascension accumulated since J2000, in arcseconds by ascending power of
+    /// Julian centuries (Capitaine, Wallace and Chapront 2003). Added to the
+    /// Earth rotation angle it gives Greenwich mean sidereal time.
+    let private precessionSeries = [| 0.014506; 4612.156534; 1.3915817; -0.00000044; -0.000029956; -0.0000000368 |]
 
     /// Ratio of a mean solar day to the mean sidereal day, the rate at J2000 of
     /// the IAU 2006 expression for Greenwich mean sidereal time: the rotation
@@ -202,7 +198,7 @@ module Epoch =
     /// arcseconds a century and TT leads UT1 by about a minute.
     let greenwichMeanSiderealTime (ut1: Instant) : float<hourangle> =
         let precession =
-            precessionInRightAscension (julianCenturies ut1) * 1.0<arcsec>
+            Polynomial.horner precessionSeries (julianCenturies ut1) * 1.0<arcsec>
             |> convert Angle.radiansPerArcsecond Angle.radiansPerHourAngle
 
         Angle.wrap 24.0<hourangle> (earthRotationAngle ut1 / Angle.radiansPerHourAngle + precession)
