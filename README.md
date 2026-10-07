@@ -55,7 +55,6 @@ src/FSharp.Astro.Fits                the FITS library
 src/FSharp.Astro.Fits.TypeProvider   the types provided properties erase to, shipped in lib/
 src/FSharp.Astro.Fits.TypeProvider.DesignTime
                                      FitsProvider itself, shipped in typeproviders/fsharp41/
-src/FSharp.Astro.Fits.UI             command line HDU lister
 test/FSharp.Astro.Units.Test         xunit.v3 and FsCheck
 test/FSharp.Astro.Fits.Test          xunit.v3 and FsCheck, with FITS fixtures
 docs/                                the FITS 4.0 standard
