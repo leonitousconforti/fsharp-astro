@@ -16,11 +16,11 @@ converts.
 open FSharp.Astro.Units
 
 let distance = 1.3<kpc>
-let meters = distance * Length.metersPerKiloparsec                                   // float<m>
-let lightYears = convert Length.metersPerKiloparsec Length.metersPerLightYear distance  // float<ly>
+let meters: float<m> = distance * Length.metersPerKiloparsec
+let lightYears: float<ly> = convert Length.metersPerKiloparsec Length.metersPerLightYear distance
 
 let proxima = convert Angle.radiansPerMilliarcsecond Angle.radiansPerArcsecond 768.5<mas>
-Length.ofParallax proxima                                                            // 1.301<pc>
+Length.ofParallax proxima   // 1.301<pc>
 
 let hubble = 70.0<km/(s Mpc)>
 let hubbleTime: float<Gyr> =
@@ -34,15 +34,15 @@ conversion factor relates them, so every quantity module holds factors to its SI
 base unit, named for what they are: `Length.metersPerParsec` has type
 `float<m/pc>`. Multiply a `float<pc>` by it and the compiler cancels the `pc`
 and leaves `float<m>`. Divide a `float<m>` by it and you get `float<pc>`. That
-is the whole mechanism; `convert` below is a name for doing both at once and
-nothing more.
+is the whole mechanism; `convert` is a name for doing both at once and nothing
+more.
 
 One `convert` goes between any two units of a quantity through the base they
 share. The base is a measure parameter like the two units are, so there is one
 of it rather than one per quantity:
 
 ```fsharp
-convert Time.secondsPerDay Time.secondsPerYear 365.25<d>   // 1.0<yr>
+convert Time.secondsPerDay Time.secondsPerYear 365.25<d>                    // 1.0<yr>
 convert Mass.kilogramsPerSolarMass Mass.kilogramsPerJupiterMass 1.0<Msun>   // 1047.6<Mjup>
 ```
 
@@ -54,7 +54,7 @@ them the same way:
 ```fsharp
 let cgs: float<erg/(s cm^2 Hz)> =
     1.0<Jy> * FluxDensity.siPerJansky / Luminosity.wattsPerErgPerSecond
-    * Length.metersPerCentimeter * Length.metersPerCentimeter    // 1e-23
+    * Length.metersPerCentimeter * Length.metersPerCentimeter   // 1e-23
 ```
 
 SI prefixes are separate units because the compiler cannot scale a type, so
@@ -87,10 +87,10 @@ values flow to any other F# code using the standard SI units. `Hz` is `1/s` and
 
 `jd`, `mjd`, `jyear` and `byear` are instants rather than durations, so they
 relate to each other by offsets instead of ratios and have no `convert`; see
-`Epoch` below. The year is the Julian year of exactly 365.25 days. `Rsun`,
-`Rearth`, `Rjup` and `Lsun` are the IAU 2015 nominal values. `Msun`, `Mearth`
-and `Mjup` are the IAU nominal GM divided by the CODATA 2018 G, matching
-astropy.
+[Instants](#instants). The year is the Julian year of exactly 365.25 days.
+`Rsun`, `Rearth`, `Rjup` and `Lsun` are the IAU 2015 nominal values. `Msun`,
+`Mearth` and `Mjup` are the IAU nominal GM divided by the CODATA 2018 G,
+matching astropy.
 
 ## Constants
 
@@ -106,20 +106,20 @@ doc comment.
 The quantity modules carry the relations that follow from their units.
 
 ```fsharp
-Angle.wrap 360.0<deg> -30.0<deg>                 // 330.0<deg>
-Angle.wrapSigned 24.0<hourangle> 13.0<hourangle> // -11.0<hourangle>
-Angle.sin (90.0<deg> * Angle.radiansPerDegree)   // 1.0, trig takes radians and returns float
+Angle.wrap 360.0<deg> -30.0<deg>                   // 330.0<deg>
+Angle.wrapSigned 24.0<hourangle> 13.0<hourangle>   // -11.0<hourangle>
+Angle.sin (90.0<deg> * Angle.radiansPerDegree)     // 1.0, trig takes radians and returns float
 
-Spectral.wavelengthOfFrequency (1420.405751768<MHz> * Frequency.hertzPerMegahertz) // 0.2111<m>
-Spectral.energyOfWavelength (1.0<AA> * Length.metersPerAngstrom) / Energy.joulesPerKiloelectronVolt // 12.4<keV>
+Spectral.wavelengthOfFrequency (1420.405751768<MHz> * Frequency.hertzPerMegahertz)   // 0.2111<m>
+Spectral.energyOfWavelength (1.0<AA> * Length.metersPerAngstrom) / Energy.joulesPerKiloelectronVolt   // 12.4<keV>
 Spectral.perWavelengthOfPerFrequency fnu wavelength   // f_lambda = f_nu c / lambda^2
 
-Luminosity.blackBody Constants.Rsun Constants.Tsun    // 3.83e26<W>
-Luminosity.flux Constants.Lsun (1.0<au> * Length.metersPerAu)  // 1361<W/m^2>
+Luminosity.blackBody Constants.Rsun Constants.Tsun                 // 3.83e26<W>
+Luminosity.flux Constants.Lsun (1.0<au> * Length.metersPerAu)      // 1361<W/m^2>
 
-Magnitude.ab Magnitude.abZeroPoint        // 0.0<mag>, the zero point is 3630.78 Jy
-Magnitude.distanceModulus 100.0<pc>       // 5.0<mag>
-Magnitude.absolute -26.74<mag> sunDistance  // 4.83<mag>
+Magnitude.ab Magnitude.abZeroPoint            // 0.0<mag>, the zero point is 3630.78 Jy
+Magnitude.distanceModulus 100.0<pc>           // 5.0<mag>
+Magnitude.absolute -26.74<mag> sunDistance    // 4.83<mag>
 ```
 
 ## Sexagesimal angles
@@ -140,87 +140,6 @@ Parsing takes colons, spaces and the `h m s`, `d m s` and `° ' "` markers, and
 fills missing trailing fields with zero. It rejects minutes or seconds of 60 and
 up, and a fractional part on anything but the last field written.
 `tryParseHours` and `tryParseDegrees` return an option.
-
-## Instants
-
-`Epoch` holds the points on a timeline that `Time` deliberately does not: Julian
-Dates, Modified Julian Dates, Julian and Besselian epochs, and sidereal time. An
-instant is not a duration, so these relate by offsets rather than ratios and
-there is no `convert`.
-
-An instant is an `Instant`, a struct holding **two** doubles that sum to a
-Julian Date, rather than one `float<jd>`. A Julian Date in a single double is
-around 2.45 million, where neighbouring doubles are 40 microseconds apart, and
-that quantisation is fixed by the size of the number: no amount of careful
-arithmetic improves it. Splitting the value so the fraction gets its own
-exponent takes the resolution to 9.6 picoseconds, a factor of exactly 2^22. It
-is the same reason ERFA and SOFA take Julian Dates as a pair.
-
-```fsharp
-Instant.ofJd 2451545.0<jd>                   // a plain Julian Date
-Instant.ofParts 2451545.0<jd> 1e-11<jd>      // magnitude first, detail second
-Epoch.ofDateTimeOffset DateTimeOffset.UtcNow // exact to the 100 ns tick
-Epoch.ofMjdParts 51544.5<mjd> microsecond    // when one double is not enough
-
-Instant.difference later Epoch.j2000         // float<d>, hand this to convert
-Instant.add 30.0<d> Epoch.j2000              // Instant
-Epoch.toJulianEpoch Epoch.j2000              // 2000.0<jyear>
-Epoch.greenwichMeanSiderealTime ut1          // 18.6974<hourangle>
-Epoch.localApparentSiderealTime -155.47<deg> ut1
-Epoch.hourAngle lst 5.919<hourangle>         // signed, negative is east of the meridian
-```
-
-The form is canonical, with `Day` an exact integer and `Fraction` in `[-0.5,
-0.5)`, so two instants are equal exactly when they name the same time and `<` is
-chronological. `difference` cancels the two integer day counts before
-subtracting the fractions, which is where the precision shows up: two instants a
-second apart in the year 2000 come back to picoseconds.
-
-It is 16 bytes, never allocates, and `Instant.difference` measures the same as a
-raw `float` subtraction. Normalising in `Instant.ofParts` costs about half a
-nanosecond, paid once when you build one.
-
-`Instant.toJd` and `Epoch.toMjd` return a single double and are lossy by
-construction, which is fine for printing. The one thing the type cannot undo is
-a value already rounded into one double before it arrives:
-`2451545.00000000001<jd>` has lost its last digits before `ofJd` is called. That
-is what the `ofParts` and `ofMjdParts` overloads are for.
-
-No time scale is modelled: an instant is whatever scale you put in. The sidereal
-functions want UT1, and feeding them UTC costs at most the 0.9 s that DUT1 is
-kept below.
-
-## Doppler shifts
-
-`Doppler` relates a velocity to a spectral shift under the radio, optical and
-relativistic conventions. The three disagree at order `(v/c)^2`, so a velocity
-means nothing without the convention that produced it. Everything goes through
-the convention-free redshift.
-
-```fsharp
-let hi = 1420.405751768<MHz>
-Doppler.velocityOfFrequency Radio hi 1420.0<MHz>      // float<m/s>
-Doppler.frequencyOfVelocity Optical hi velocity       // float<MHz>
-Doppler.convert Radio Relativistic velocity           // the same shift, read the other way
-Doppler.betaOfRedshift Relativistic 1.0               // 0.6
-```
-
-## Black bodies
-
-`Planck` has the Planck function per unit frequency and per unit wavelength, its
-Rayleigh-Jeans and Wien limits, the Wien displacement law in both variables, and
-brightness temperature. Intensity carries a steradian, which is what
-distinguishes it from the flux density a point source delivers; multiply by a
-solid angle to get back.
-
-```fsharp
-Planck.bNu 5772.0<K> nu                                  // float<W/(m^2 Hz sr)>
-Planck.brightnessTemperature nu intensity                // inverts the Planck function exactly
-Planck.rayleighJeansTemperature nu intensity             // the linear one radio work means
-Planck.gaussianBeamSolidAngle fwhm                       // float<sr>
-Planck.rayleighJeansTemperatureOfFluxDensity beam nu s   // jansky per beam to kelvin
-Planck.peakWavelength Constants.Tsun                     // 5.02e-7<m>
-```
 
 ## The sphere
 
@@ -251,9 +170,9 @@ component is the catalogue one, `mu_alpha* = mu_alpha cos delta`, already
 multiplied by the cosine of the latitude.
 
 ```fsharp
-ProperMotion.total muRaStar muDec                        // float<rad/yr>
+ProperMotion.total muRaStar muDec                                 // float<rad/yr>
 ProperMotion.atEpoch 1991.25<jyear> 2016.0<jyear> ra dec muRaStar muDec
-ProperMotion.tangentialVelocity 5.0<pc> mu               // float<m/s>, the 4.74 falls out
+ProperMotion.tangentialVelocity 5.0<pc> mu                        // float<m/s>, the 4.74 falls out
 ```
 
 Positions are transported along the great circle the motion points down, not by
@@ -264,20 +183,98 @@ exactly: the gap is the convergence of the meridians, half an arcsecond for the
 fastest star over a century. Radial velocity is not modelled, so there is no
 perspective acceleration.
 
+## Instants
+
+`Epoch` holds the points on a timeline that `Time` deliberately does not: Julian
+Dates, Modified Julian Dates, Julian and Besselian epochs, and sidereal time. An
+instant is not a duration, so these relate by offsets rather than ratios and
+there is no `convert`.
+
+An instant is an `Instant`, a struct holding two doubles that sum to a Julian
+Date, rather than one `float<jd>`. A Julian Date in a single double is around
+2.46 million, where neighbouring doubles are 40 microseconds apart, and that
+quantisation is fixed by the size of the number: no amount of careful arithmetic
+improves it. Splitting the value so the fraction gets its own exponent takes the
+resolution to 9.6 picoseconds, a factor of exactly 2^22. It is the same reason
+ERFA and SOFA take Julian Dates as a pair.
+
+```fsharp
+Instant.ofJd 2451545.0<jd>                   // a plain Julian Date
+Instant.ofParts 2451545.0<jd> 1e-11<jd>      // magnitude first, detail second
+Epoch.ofMjdParts 51544.5<mjd> 1e-11<mjd>     // the same, from a Modified Julian Date
+Epoch.ofDateTimeOffset DateTimeOffset.UtcNow // exact to the 100 ns tick
+
+Instant.difference later Epoch.j2000         // float<d>, hand this to convert
+Instant.add 30.0<d> Epoch.j2000              // Instant
+Epoch.toJulianEpoch Epoch.j2000              // 2000.0<jyear>
+Epoch.greenwichMeanSiderealTime ut1          // 18.6974<hourangle>
+Epoch.localApparentSiderealTime -155.47<deg> ut1
+Epoch.hourAngle lst 5.919<hourangle>         // signed, negative is east of the meridian
+```
+
+The form is canonical, with `Day` an exact integer and `Fraction` in `[-0.5,
+0.5)`, so two instants are equal exactly when they name the same time and `<` is
+chronological. `difference` cancels the two integer day counts before
+subtracting the fractions, which is where the precision shows up: two instants a
+second apart in the year 2000 come back to picoseconds. The struct is 16 bytes
+and never allocates.
+
+`Instant.toJd` and `Epoch.toMjd` return a single double and are lossy by
+construction, which is fine for printing. The one thing the type cannot undo is
+a value already rounded into one double before it arrives:
+`2451545.00000000001<jd>` has lost its last digits before `ofJd` is called. That
+is what `ofParts` and `ofMjdParts` are for.
+
+No time scale is modelled: an instant is whatever scale you put in. The sidereal
+functions want UT1, and feeding them UTC costs at most the 0.9 s that DUT1 is
+kept below.
+
+## Doppler shifts
+
+`Doppler` relates a velocity to a spectral shift under the radio, optical and
+relativistic conventions. The three disagree at order `(v/c)^2`, so a velocity
+means nothing without the convention that produced it. Everything goes through
+the convention-free redshift.
+
+```fsharp
+let hi = 1420.405751768<MHz>
+Doppler.velocityOfFrequency Radio hi 1420.0<MHz>   // float<m/s>
+Doppler.frequencyOfVelocity Optical hi velocity    // float<MHz>
+Doppler.convert Radio Relativistic velocity        // the same shift, read the other way
+Doppler.betaOfRedshift Relativistic 1.0            // 0.6
+```
+
+## Black bodies
+
+`Planck` has the Planck function per unit frequency and per unit wavelength, its
+Rayleigh-Jeans and Wien limits, the Wien displacement law in both variables, and
+brightness temperature. Intensity carries a steradian, which is what
+distinguishes it from the flux density a point source delivers; multiply by a
+solid angle to get back.
+
+```fsharp
+Planck.bNu 5772.0<K> nu                                  // float<W/(m^2 Hz sr)>
+Planck.brightnessTemperature nu intensity                // inverts the Planck function exactly
+Planck.rayleighJeansTemperature nu intensity             // the linear one radio work means
+Planck.gaussianBeamSolidAngle fwhm                       // float<sr>
+Planck.rayleighJeansTemperatureOfFluxDensity beam nu s   // jansky per beam to kelvin
+Planck.peakWavelength Constants.Tsun                     // 5.02e-7<m>
+```
+
 ## Photometric systems
 
 `Photometry` adds the ST and Vega systems to the AB one in `Magnitude`, with
-bolometric magnitudes on the IAU 2015 scale and extinction. AB and ST each fix a
-flat spectrum and so need only one number; Vega is defined by the spectrum of a
-star and so needs a zero point per band, which is why `vega` takes a
-`PhotometricBand` and `ab` does not.
+bolometric magnitudes on the IAU 2015 scale. AB and ST each fix a flat spectrum
+and so need only one number; Vega is defined by the spectrum of a star and so
+needs a zero point per band, which is why `vega` takes a `PhotometricBand` and
+`ab` does not.
 
 ```fsharp
-Photometry.st fLambda                                  // float<mag>, HST's system
-Photometry.vega Photometry.Bands.Ks fluxDensity        // float<mag>
-Photometry.abOffset Photometry.Bands.Ks                // 1.84<mag>, m_AB - m_Vega
-Photometry.absoluteBolometric Constants.Lsun           // 4.74<mag>
-Photometry.absolute 14.2<mag> 1500.0<pc> 2.4<mag>      // with the dust taken out
+Photometry.st fLambda                               // float<mag>, HST's system
+Photometry.vega Photometry.Bands.Ks fluxDensity     // float<mag>
+Photometry.abOffset Photometry.Bands.Ks             // 1.84<mag>, m_AB - m_Vega
+Photometry.absoluteBolometric Constants.Lsun        // 4.74<mag>
+Photometry.absolute 14.2<mag> 1500.0<pc> 2.4<mag>   // with the dust taken out
 ```
 
 `Photometry.Bands` carries Johnson-Cousins `U` to `I` from Bessell, Castelli and
@@ -293,20 +290,13 @@ an `ExtinctionLaw` turns the extinction in one band into the extinction at every
 wavelength.
 
 ```fsharp
-Extinction.ofColourExcess Extinction.rvDiffuse 0.3<mag>  // 0.93<mag> in V
-Extinction.transmission 1.0<mag>                         // 0.398 of the flux survives
-Extinction.relativeToV Cardelli1989 3.1 wavelength       // A(lambda)/A(V), one in V
-Extinction.inBand Cardelli1989 3.1 av Photometry.Bands.B // 1.33 av
+Extinction.ofColourExcess Extinction.rvDiffuse 0.3<mag>    // 0.93<mag> in V
+Extinction.transmission 1.0<mag>                           // 0.398 of the flux survives
+Extinction.relativeToV Cardelli1989 3.1 wavelength         // A(lambda)/A(V), one in V
+Extinction.inBand Cardelli1989 3.1 av Photometry.Bands.B   // 1.33 av
 Extinction.bandColourExcess Cardelli1989 3.1 av bBand vBand
 ```
 
 `Cardelli1989` is the mean Galactic curve, valid from 0.1 to 3.3 micrometres and
 parameterised by `R_V` alone. `tryRelativeToV` returns an option outside that
 range; `relativeToV` raises.
-
-## Building
-
-This package lives in the
-[fsharp-astro](https://github.com/leonitousconforti/fsharp-astro) repository
-alongside `FSharp.Astro.Fits`. The repository README covers building and
-testing.

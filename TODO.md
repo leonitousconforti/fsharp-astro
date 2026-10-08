@@ -16,34 +16,7 @@ formatting and parsing; JD, MJD, Julian and Besselian epochs with mean and appar
 the three Doppler conventions; the Planck function and brightness temperature; ST and Vega
 photometry with Johnson-Cousins, 2MASS and SDSS bands; bolometric magnitudes; extinction with the
 Cardelli 1989 curve; spherical separations, position angles and offsets; proper motion; two-part
-Julian Dates resolving picoseconds.
-
-### Next
-
-- Gaia `G`, `G_BP` and `G_RP` in `Photometry.Bands`. Left out because the EDR3 Vega zero points
-  are published as magnitudes in electrons per second, not as flux densities, and the jansky
-  values could not be confirmed against a source. Table 3 of the EDR3 photometry paper has them.
-- Frame transformations: ICRS to galactic and ecliptic, which is a rotation matrix each and the
-  obvious next thing now that `Spherical` exists.
-- Fitzpatrick 1999 as a second `ExtinctionLaw`, and the Gordon 2023 curve it is being replaced by.
-- A narrower `PhotometricBand`: the effective wavelength is a poor stand-in for a filter in U,
-  where the band is wide and the extinction curve across it is steep. A transmission curve would
-  let `Extinction.inBand` integrate instead of sampling.
-- Airmass and atmospheric extinction from a zenith distance, now that `hourAngle` is there.
-- Time scales on top of `Instant`: TAI, TT, TDB and UTC as distinct types, so that handing UTC to
-  a sidereal time function is a compile error rather than a 0.9 s one. Needs a leap second table,
-  which has to come from somewhere and expire.
-- A two-part duration. `Instant.difference` returns `float<d>`, whose own spacing takes over for
-  gaps beyond about ten thousand days, so a long baseline loses what the instants kept.
-
-### Later
-
-- Cosmological distances for flat and open models: comoving, luminosity and angular diameter
-  distance, lookback time, with `H0: float<km/(s Mpc)>`.
-- Factors for `float32` and `decimal`. The factors are `float` today; a FITS image is often
-  `float32[]` and tagging it should not force a widening copy.
-- A `[<Measure>]` for the cgs `dyn` and `Ba` if anyone asks. `erg`, `cm` and `g` already cover
-  the common cgs flux and density expressions.
+Julian Dates resolving picoseconds. Nothing further is planned.
 
 ## FSharp.Astro.Fits
 
