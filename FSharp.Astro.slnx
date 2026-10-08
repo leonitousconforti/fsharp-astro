@@ -4,7 +4,6 @@
     <Project Path="src/FSharp.Astro.Fits/Fits.fsproj" />
     <Project Path="src/FSharp.Astro.Fits.TypeProvider/Fits.TypeProvider.fsproj" />
     <Project Path="src/FSharp.Astro.Fits.TypeProvider.DesignTime/Fits.TypeProvider.DesignTime.fsproj" />
-    <Project Path="src/FSharp.Astro.Fits.UI/Fits.UI.fsproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/FSharp.Astro.Units.Test/Units.Test.fsproj" />

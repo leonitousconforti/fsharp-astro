@@ -57,6 +57,7 @@ src/FSharp.Astro.Fits.TypeProvider.DesignTime
                                      FitsProvider itself, shipped in typeproviders/fsharp41/
 test/FSharp.Astro.Units.Test         xunit.v3 and FsCheck
 test/FSharp.Astro.Fits.Test          xunit.v3 and FsCheck, with FITS fixtures
+scratchpad/fits.fsx                  a scratchpad over the FITS library, run with dotnet fsi
 docs/                                the FITS 4.0 standard
 ```
 
